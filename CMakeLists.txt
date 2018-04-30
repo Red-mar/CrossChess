@@ -38,6 +38,12 @@ if(NOT SDL2_TTF_FOUND)
 endif(NOT SDL2_TTF_FOUND)
 include_directories(${SDL2_TTF_INCLUDE_DIRS})
 
+find_package(SDL_gfx REQUIRED)
+if(NOT SDLGFX_FOUND)
+	message(FATAL_ERROR "SDL2_gfx library not found")
+endif(NOT SDLGFX_FOUND)
+include_directories(${SDLGFX_INCLUDE_DIR})
+
 file(GLOB_RECURSE SOURCES  src/*.cpp)
 
 add_executable(SDLStructured main.cpp ${SOURCES})
@@ -49,6 +55,7 @@ target_link_libraries(
   ${SDL2_MIXER_LIBRARIES}
   ${SDL2_IMAGE_LIBRARY}
   ${SDL2_TTF_LIBRARIES}
+  ${SDLGFX_LIBRARY}
   )
 
 #find_package(SDL2 REQUIRED)

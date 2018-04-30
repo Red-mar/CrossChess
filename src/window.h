@@ -65,6 +65,7 @@ class Window
         float getDelta();
         void drawBox(RotatedRectangle* r, SDL_Color color);
         void drawHexagon(Hexagon* hexagon, SDL_Color color);
+        void drawFilledHexagon(Hexagon* hexagon, SDL_Color color);
         void print(std::string text, int x, int y, Color color);
 
     private:

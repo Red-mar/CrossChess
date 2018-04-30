@@ -245,6 +245,23 @@ void Window::drawBox(RotatedRectangle *r, SDL_Color color)
 
 void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
 {
+    // NOTE: float to Sint16 might be bad?
+    Sint16 vx[6];
+    Sint16 vy[6];
+    for (int i = 0; i < 6; i++)
+    {
+        vx[i] = (Sint16)hexagon->points[i].x;
+        vy[i] = (Sint16)hexagon->points[i].y;
+    }
+
+    polygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
+
+    // NOTE: takes a lot of cpu power not realy worth it maybe as an option
+    //aapolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
+
+    /*
+    NOTE: Rendering without SDLGFX
+
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
     SDL_RenderDrawLine(renderer,
@@ -270,4 +287,17 @@ void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
     SDL_RenderDrawLine(renderer,
                        (int)hexagon->points[5].x, (int)hexagon->points[5].y,
                        (int)hexagon->points[0].x, (int)hexagon->points[0].y);
+                       */
+}
+
+void Window::drawFilledHexagon(Hexagon *hexagon, SDL_Color color)
+{
+    Sint16 vx[6];
+    Sint16 vy[6];
+    for (int i = 0; i < 6; i++)
+    {
+        vx[i] = (Sint16)hexagon->points[i].x;
+        vy[i] = (Sint16)hexagon->points[i].y;
+    }
+    filledPolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
 }

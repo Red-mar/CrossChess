@@ -19,6 +19,8 @@ class Tile
         void setPiece(Piece* npiece);
         void removePiece();
 
+        void setSelected(bool nselect);
+
         void render(float x, float y);
         void setColor(SDL_Color ncolor);
 
@@ -29,6 +31,7 @@ class Tile
         SDL_Color color = {0,255,0,255};
         int tileIndex;
         Piece* piece;
+        bool isSelected;
 };
 
 #endif // !TILE_H

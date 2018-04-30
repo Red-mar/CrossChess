@@ -27,7 +27,7 @@ Grid::~Grid()
     }
 }
 
-Tile*
+Tile *
 Grid::getSelectedTile()
 {
     return selectedTile;
@@ -51,9 +51,13 @@ bool Grid::selectTile(Point point)
         if (tile->getHexTile() == clickHex)
         {
             succes = true;
-            if (selectedTile)
+            if (selectedTile) {
                 selectedTile->setColor({0, 255, 0, 255});
+                selectedTile->setSelected(false);
+            }
+                
             selectedTile = tile;
+            selectedTile->setSelected(true);
             if (selectedTile->getPiece())
             {
                 Log::debug("current piece is " + selectedTile->getPiece()->getFilename());
@@ -63,16 +67,14 @@ bool Grid::selectTile(Point point)
                 Log::debug("current piece is nullptr");
             }
 
-            tile->setColor({255, 0, 0, 255});
+            tile->setColor({255, 0, 0, 55});
             break;
-        }
-        else
-        {
         }
     }
     if (!succes)
     {
         selectedTile->setColor({0, 255, 0, 255});
+        selectedTile->setSelected(false);
         selectedTile = nullptr;
     }
     return succes;
@@ -95,14 +97,21 @@ bool Grid::movePiece(Point point)
                 tile->getPiece() == nullptr)
             {
                 succes = true;
+                if (selectedTile)
+                    selectedTile->setColor({0, 255, 0, 255});
                 tile->setPiece(selectedTile->getPiece());
                 selectedTile->removePiece();
-                selectedTile = tile;
-            }
-            else
-            {
+                selectedTile->setSelected(false);
+                selectedTile = nullptr;
+                break;
             }
         }
+    }
+    if (!succes)
+    {
+        selectedTile->setColor({0, 255, 0, 255});
+        selectedTile->setSelected(false);
+        selectedTile = nullptr;
     }
     return succes;
 }
