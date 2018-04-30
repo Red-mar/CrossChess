@@ -14,7 +14,7 @@ class Piece : public Sprite
         ~Piece();
 
         std::string getFilename();
-        virtual bool canMove(Tile* currentHex, Tile* moveToHex) = 0;
+        virtual std::vector<Tile*> canMove(Tile* currentTile, std::vector<Tile*> tiles) = 0;
 
     private:
         std::string filename;

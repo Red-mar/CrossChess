@@ -8,7 +8,7 @@ class Pawn : public Piece
     public:
         Pawn(Window* window, std::string filename);
 
-        bool canMove(Tile* currentHex, Tile* hexToMove);
+        std::vector<Tile*> canMove(Tile* currentTile, std::vector<Tile*> tiles);
     private:
         int maxMovement;
 };

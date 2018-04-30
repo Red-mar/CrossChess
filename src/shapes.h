@@ -146,7 +146,7 @@ struct Layout
 
 struct Hex
 { // Cube storage, cube constructor
-	const int q, r, s;
+	int q, r, s;
 	Hex(int q_, int r_, int s_) : q(q_), r(r_), s(s_)
 	{
 		//assert (q + r + s == 0);
@@ -157,8 +157,6 @@ static bool operator==(Hex a, Hex b)
 {
 	return a.q == b.q && a.r == b.r && a.s == b.s;
 }
-
-
 
 static bool operator!=(Hex a, Hex b)
 {
@@ -178,6 +176,11 @@ static Hex hex_subtract(Hex a, Hex b)
 static Hex hex_multiply(Hex a, int k)
 {
 	return Hex(a.q * k, a.r * k, a.s * k);
+}
+
+static Hex hex_divide(Hex a, int k)
+{
+	return Hex(a.q / k, a.r / k, a.s / k);
 }
 
 static int hex_length(Hex hex)
@@ -232,73 +235,121 @@ static FractionalHex pixel_to_hex(Layout layout, Point p)
 	}
 }
 
-static Point hex_corner_offset(Layout layout, int corner) {
-    Point size = layout.size;
-    double angle = 2.0 * M_PI *
-             (layout.orientation.start_angle + corner) / 6;
-    return Point(size.x * cos(angle), size.y * sin(angle));
+static Point hex_corner_offset(Layout layout, int corner)
+{
+	Point size = layout.size;
+	double angle = 2.0 * M_PI *
+				   (layout.orientation.start_angle + corner) / 6;
+	return Point(size.x * cos(angle), size.y * sin(angle));
 }
 
-static std::vector<Point> polygon_corners(Layout layout, Hex h) {
-    std::vector<Point> corners = {};
-    Point center = hex_to_pixel(layout, h);
-    for (int i = 0; i < 6; i++) {
-        Point offset = hex_corner_offset(layout, i);
-        corners.push_back(Point(center.x + offset.x,
-                                center.y + offset.y));
-    }
-    return corners;
+static std::vector<Point> polygon_corners(Layout layout, Hex h)
+{
+	std::vector<Point> corners = {};
+	Point center = hex_to_pixel(layout, h);
+	for (int i = 0; i < 6; i++)
+	{
+		Point offset = hex_corner_offset(layout, i);
+		corners.push_back(Point(center.x + offset.x,
+								center.y + offset.y));
+	}
+	return corners;
 }
 
-static Hex hex_round(FractionalHex h) {
-    int q = int(round(h.q));
-    int r = int(round(h.r));
-    int s = int(round(h.s));
-    double q_diff = abs(q - h.q);
-    double r_diff = abs(r - h.r);
-    double s_diff = abs(s - h.s);
-    if (q_diff > r_diff && q_diff > s_diff) {
-        q = -r - s;
-    } else if (r_diff > s_diff) {
-        r = -q - s;
-    } else {
-        s = -q - r;
-    }
-    return Hex(q, r, s);
+static Hex hex_round(FractionalHex h)
+{
+	int q = int(round(h.q));
+	int r = int(round(h.r));
+	int s = int(round(h.s));
+	double q_diff = abs(q - h.q);
+	double r_diff = abs(r - h.r);
+	double s_diff = abs(s - h.s);
+	if (q_diff > r_diff && q_diff > s_diff)
+	{
+		q = -r - s;
+	}
+	else if (r_diff > s_diff)
+	{
+		r = -q - s;
+	}
+	else
+	{
+		s = -q - r;
+	}
+	return Hex(q, r, s);
 }
 
-static float lerp(double a, double b, double t) {
-    return a * (1-t) + b * t;
-    /* better for floating point precision than
+static float lerp(double a, double b, double t)
+{
+	return a * (1 - t) + b * t;
+	/* better for floating point precision than
        a + (b - a) * t, which is what I usually write */
 }
 
-static FractionalHex hex_lerp(Hex a, Hex b, double t) {
-    return FractionalHex(lerp(a.q, b.q, t),
-                         lerp(a.r, b.r, t),
-                         lerp(a.s, b.s, t));
+static FractionalHex hex_lerp(Hex a, Hex b, double t)
+{
+	return FractionalHex(lerp(a.q, b.q, t),
+						 lerp(a.r, b.r, t),
+						 lerp(a.s, b.s, t));
 }
 
-static std::vector<Hex> hex_linedraw(Hex a, Hex b) {
-    int N = hex_distance(a, b);
-    std::vector<Hex> results = {};
-    double step = 1.0 / std::max(N, 1);
-    for (int i = 0; i <= N; i++) {
-        results.push_back(hex_round(hex_lerp(a, b, step * i)));
-    }
-    return results;
+static std::vector<Hex> hex_linedraw(Hex a, Hex b)
+{
+	int N = hex_distance(a, b);
+	std::vector<Hex> results = {};
+	double step = 1.0 / std::max(N, 1);
+	for (int i = 0; i <= N; i++)
+	{
+		FractionalHex lerp = hex_lerp(a, b, step * i);
+		results.push_back(hex_round(lerp));
+	}
+	return results;
 }
 
-namespace std {
-    template <> struct hash<Hex> {
-        size_t operator()(const Hex& h) const {
-            hash<int> int_hash;
-            size_t hq = int_hash(h.q);
-            size_t hr = int_hash(h.r);
-            return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
-        }
-    };
+static std::vector<Hex> hex_diagonal_linedraw(Hex a, Hex b)
+{
+	int N = hex_distance(a, b);
+	std::vector<Hex> results = {};
+	double step = 1.0 / std::max(N, 1);
+	for (int i = 0; i <= N; i++)
+	{
+		FractionalHex lerp = hex_lerp(a, b, step * i);
+		if (floor(lerp.q) == lerp.q && floor(lerp.r) == lerp.r && floor(lerp.s) == lerp.s)
+		{
+			results.push_back(hex_round(lerp));
+		}
+	}
+	return results;
 }
 
+static const std::vector<Hex> hex_diagonals = {
+	Hex(2, -1, -1), Hex(1, 1, -2), Hex(-1, 2, -1),
+	Hex(-2, 1, 1), Hex(-1, -1, 2), Hex(1, -2, 1)};
+
+static Hex hex_diagonal(int direction /* 0 to 5 */)
+{
+	//assert (0 <= direction && direction < 6);
+	return hex_diagonals[direction];
+}
+
+static Hex hex_diagonal_neighbor(Hex hex, int direction)
+{
+	return hex_add(hex, hex_diagonal(direction));
+}
+
+namespace std
+{
+template <>
+struct hash<Hex>
+{
+	size_t operator()(const Hex &h) const
+	{
+		hash<int> int_hash;
+		size_t hq = int_hash(h.q);
+		size_t hr = int_hash(h.r);
+		return hq ^ (hr + 0x9e3779b9 + (hq << 6) + (hq >> 2));
+	}
+};
+}
 
 #endif // !SHAPES_H

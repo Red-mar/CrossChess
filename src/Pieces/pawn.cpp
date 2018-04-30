@@ -5,9 +5,19 @@ Pawn::Pawn(Window *window, std::string filename) : Piece(window, filename),
 {
 }
 
-bool Pawn::canMove(Tile* currentHex, Tile* moveToHex)
+std::vector<Tile*> Pawn::canMove(Tile* currentTile, std::vector<Tile*> tiles)
 {
-    return (hex_distance(currentHex->getHexTile(), moveToHex->getHexTile()) <= maxMovement &&
-            hex_add(currentHex->getHexTile(), hex_direction(2)) == moveToHex->getHexTile() &&
-            moveToHex->getPiece() == nullptr); // checks if the direction is correct
+    std::vector<Tile*> result;
+
+    for(auto tile : tiles)
+    {
+        if (hex_distance(currentTile->getHexTile(), tile->getHexTile()) <= maxMovement &&
+            hex_add(currentTile->getHexTile(), hex_direction(2)) == tile->getHexTile() &&
+            tile->getPiece() == nullptr)
+        {
+            result.push_back(tile);
+        }
+    }
+
+    return result;
 }

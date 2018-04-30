@@ -78,13 +78,11 @@ bool Grid::selectTile(Point point)
             if (selectedTile->getPiece())
             {
                 Log::debug("current piece is " + selectedTile->getPiece()->getFilename());
-                for (auto tile : tiles)
+
+                for (auto tile : selectedTile->getPiece()->canMove(selectedTile, tiles))
                 {
-                    if (selectedTile->getPiece()->canMove(selectedTile, tile))
-                    {
-                        tile->setSelected(true);
-                        tile->setColor({0, 255, 0, 55});
-                    }
+                    tile->setSelected(true);
+                    tile->setColor({0, 255, 0, 55});
                 }
             }
             else
@@ -122,10 +120,9 @@ bool Grid::movePiece(Point point)
     {
         Hex clickHex = hex_round(pixel_to_hex({hexOrientation, hexSize, hexOrigin}, point));
 
-        for (auto tile : tiles)
+        for (auto tile : selectedTile->getPiece()->canMove(selectedTile, tiles))
         {
-            if (tile->getHexTile() == clickHex &&
-                selectedTile->getPiece()->canMove(selectedTile, tile))
+            if (tile->getHexTile() == clickHex)
             {
                 succes = true;
                 if (selectedTile)

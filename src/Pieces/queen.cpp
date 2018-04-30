@@ -1,11 +1,10 @@
-#include "rook.h"
+#include "queen.h"
 
-Rook::Rook(Window *window, std::string filename) : Piece(window, filename)
+Queen::Queen(Window *window, std::string filename) : Piece(window, filename)
 {
 }
 
-std::vector<Tile *>
-Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
+std::vector<Tile*> Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles)
 {
     std::vector<Tile *> result;
 
@@ -25,7 +24,7 @@ Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
                     tile->getPiece() == nullptr)
             {
 
-                for (auto tileInLine : hex_diagonal_linedraw(currentTile->getHexTile(), tile->getHexTile())) // TODO: make linedraw that returns vector<tile>
+                for (auto tileInLine : hex_diagonal_linedraw(currentTile->getHexTile(), tile->getHexTile())) // NOTE: need seperate line for diagonals...
                 {
                     for (auto tilePieceCheck : tiles)
                     {
@@ -45,12 +44,14 @@ Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
         }
     }
 
+    //NOTE need to seperate diagonal movement because of the different linedraw, not ideal
+
     for (auto tile : tiles)
     {
         if (currentTile == tile)
             continue;
-        if (((currentTile->getHexTile().r == tile->getHexTile().r && (hex_distance(currentTile->getHexTile(), tile->getHexTile()) <= 1)) ||
-             (currentTile->getHexTile().s == tile->getHexTile().s && (hex_distance(currentTile->getHexTile(), tile->getHexTile()) <= 1)) ||
+        if ((currentTile->getHexTile().r == tile->getHexTile().r ||
+             currentTile->getHexTile().s == tile->getHexTile().s ||
              currentTile->getHexTile().q == tile->getHexTile().q) &&
             tile->getPiece() == nullptr)
         {

@@ -3,7 +3,8 @@
 
 #include "window.h"
 #include "tile.h"
-#include "Pieces/rook.h"
+#include "Pieces/Bishop.h"
+#include "Pieces/Rook.h"
 
 #include <vector>
 #include <unordered_set>

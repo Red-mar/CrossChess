@@ -8,7 +8,7 @@ class Rook : public Piece
     public:
         Rook(Window* window, std::string filename);
 
-        bool canMove(Tile* currentHex, Tile* moveToHex);
+        std::vector<Tile*> canMove(Tile* currentTile, std::vector<Tile*> tiles);
     private:
 };
 
