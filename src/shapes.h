@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "math.h"
+#include <algorithm>
 #define M_PI 3.14159265358979323846
 
 class Point
@@ -264,6 +265,28 @@ static Hex hex_round(FractionalHex h) {
         s = -q - r;
     }
     return Hex(q, r, s);
+}
+
+static float lerp(double a, double b, double t) {
+    return a * (1-t) + b * t;
+    /* better for floating point precision than
+       a + (b - a) * t, which is what I usually write */
+}
+
+static FractionalHex hex_lerp(Hex a, Hex b, double t) {
+    return FractionalHex(lerp(a.q, b.q, t),
+                         lerp(a.r, b.r, t),
+                         lerp(a.s, b.s, t));
+}
+
+static std::vector<Hex> hex_linedraw(Hex a, Hex b) {
+    int N = hex_distance(a, b);
+    std::vector<Hex> results = {};
+    double step = 1.0 / std::max(N, 1);
+    for (int i = 0; i <= N; i++) {
+        results.push_back(hex_round(hex_lerp(a, b, step * i)));
+    }
+    return results;
 }
 
 namespace std {

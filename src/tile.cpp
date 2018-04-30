@@ -10,10 +10,6 @@ Tile::Tile(Window *window, int tileIndex, Point center, int size, Hex hexTile, L
     std::vector<Point> points = polygon_corners(layout, hexTile);
 
     hexagon = new Hexagon(points[0], points[1], points[2], points[3], points[4], points[5]);
-    if (rand() % 2 == 1)
-    {
-        piece = new Piece(window, "assets/unicorn.png");
-    }
 }
 Tile::~Tile()
 {

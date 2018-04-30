@@ -3,6 +3,7 @@
 
 #include "window.h"
 #include "tile.h"
+#include "Pieces/rook.h"
 
 #include <vector>
 #include <unordered_set>
@@ -30,6 +31,8 @@ class Grid
     Orientation hexOrientation = layout_flat;
     Point hexSize;
     Point hexOrigin;
+
+    void fillBoard();
 };
 
 #endif // !GRID_H

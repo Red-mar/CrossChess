@@ -3,6 +3,10 @@
 
 #include "sprite.h"
 
+class Tile;
+
+#include "tile.h"
+
 class Piece : public Sprite
 {
     public:
@@ -10,6 +14,7 @@ class Piece : public Sprite
         ~Piece();
 
         std::string getFilename();
+        virtual bool canMove(Tile* currentHex, Tile* moveToHex) = 0;
 
     private:
         std::string filename;
