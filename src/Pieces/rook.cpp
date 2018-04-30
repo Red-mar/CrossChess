@@ -15,7 +15,7 @@ Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
             continue;
         Hex tempHexLeft = tile->getHexTile();
         Hex tempHexRight = tile->getHexTile();
-        bool visionBlocked = false;
+
         for (size_t i = 0; i < hex_distance(currentTile->getHexTile(), tile->getHexTile()); i++)
         {
             tempHexLeft = hex_add(tempHexLeft, hex_diagonals[0]);
@@ -24,7 +24,7 @@ Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
                 hex_diagonal_neighbor(currentTile->getHexTile(), 3) == tempHexRight &&
                     tile->getPiece() == nullptr)
             {
-
+                bool visionBlocked = false;
                 for (auto tileInLine : hex_diagonal_linedraw(currentTile->getHexTile(), tile->getHexTile())) // TODO: make linedraw that returns vector<tile>
                 {
                     for (auto tilePieceCheck : tiles)

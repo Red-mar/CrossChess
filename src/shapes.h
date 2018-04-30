@@ -314,7 +314,9 @@ static std::vector<Hex> hex_diagonal_linedraw(Hex a, Hex b)
 	for (int i = 0; i <= N; i++)
 	{
 		FractionalHex lerp = hex_lerp(a, b, step * i);
-		if (floor(lerp.q) == lerp.q && floor(lerp.r) == lerp.r && floor(lerp.s) == lerp.s)
+		if ((floor(lerp.q) == lerp.q && floor(lerp.r) == lerp.r && floor(lerp.s) == lerp.s) || //TODO: fix floating point comparison errors
+			lerp.q == DBL_EPSILON || lerp.r == 1.1102230246251565e-16 || lerp.s == 1.1102230246251565e-16||
+			lerp.q == -DBL_EPSILON || lerp.r == -1.1102230246251565e-16 || lerp.s == -1.1102230246251565e-16)
 		{
 			results.push_back(hex_round(lerp));
 		}
