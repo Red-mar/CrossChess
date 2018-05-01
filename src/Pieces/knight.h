@@ -16,9 +16,9 @@ class Knight : public Piece
 
   private:
     const std::vector<Hex> possibleMoves = {
-        Hex(-1, -1, -1), Hex(1, -2, -2), Hex(3, -2, -2),
-        Hex(3, -1, -1), Hex(-1, 2, 2), Hex(1, 1, 1),
-        Hex(-3, 1, 1), Hex(-3, 2, 2)};
+        Hex(-1, -1, 2), Hex(1, -2, 1), Hex(3, -2, -1),
+        Hex(3, -1, -2), Hex(-1, 2, -1), Hex(1, 1, -2),
+        Hex(-3, 1, 2), Hex(-3, 2, 1)};
 };
 
 #endif // !KNIGHT_H

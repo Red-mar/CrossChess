@@ -11,6 +11,7 @@ Knight::canMove(Tile *currentTile, std::vector<Tile *> tiles)
 
     for (auto tile : tiles)
     {
+        Hex h = hex_subtract(tile->getHexTile(), currentTile->getHexTile());
         if (std::find(possibleMoves.begin(), possibleMoves.end(), hex_subtract(tile->getHexTile(), currentTile->getHexTile())) != possibleMoves.end() &&
             tile->getPiece() == nullptr)
         {

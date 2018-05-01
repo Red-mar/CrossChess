@@ -103,6 +103,8 @@ struct RotatedRectangle
 
 //https://www.redblobgames.com/grids/hexagons/
 
+//TODO clean this up :(
+
 struct Hexagon
 {
 	Point points[6];
