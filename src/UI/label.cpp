@@ -36,5 +36,5 @@ void Label::update(float dt)
 }
 void Label::render(float cameraX, float cameraY)
 {
-    labelText->render(position->x - cameraX, position->y - cameraY);
+    labelText->render((float)position->x - cameraX, (float)position->y - cameraY);
 }

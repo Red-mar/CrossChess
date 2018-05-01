@@ -3,6 +3,10 @@
 
 #include "piece.h"
 
+/* The pawn can move only one tile forward
+ * depending on which player it belongs to
+ * it should go forward or backwards.
+ */
 class Pawn : public Piece
 {
     public:

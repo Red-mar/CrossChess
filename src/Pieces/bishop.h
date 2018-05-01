@@ -3,6 +3,10 @@
 
 #include "piece.h"
 
+/* The bishop can move to any
+ * neighboring 'diagonal' tiles
+ * basicly the r and s coordinates
+ */
 class Bishop : public Piece
 {
     public:

@@ -1,8 +1,7 @@
 #include "rook.h"
 
 Rook::Rook(Window *window, std::string filename) : Piece(window, filename)
-{
-}
+{}
 
 std::vector<Tile *>
 Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)

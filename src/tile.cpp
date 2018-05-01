@@ -68,7 +68,7 @@ void Tile::render(float x, float y)
 
     if (piece)
     {
-        piece->render(hexagon->points[4].x, hexagon->points[4].y); // TODO easiest for now; need to line it up properly
+        piece->render((float)hexagon->points[4].x, (float)hexagon->points[4].y); // TODO easiest for now; need to line it up properly
     }
 }
 

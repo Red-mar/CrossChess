@@ -35,7 +35,7 @@ void Grid::fillBoard()
     {
         if (rand() % 5 == 1)
         {
-            tile->setPiece(new Rook(window, "assets/unicorn.png"));
+            tile->setPiece(new Knight(window, "assets/unicorn.png"));
         }
     }
 }

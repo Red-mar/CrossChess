@@ -5,6 +5,8 @@
 #include "tile.h"
 #include "Pieces/Bishop.h"
 #include "Pieces/Rook.h"
+#include "Pieces/King.h"
+#include "Pieces/Knight.h"
 
 #include <vector>
 #include <unordered_set>

@@ -18,6 +18,6 @@ void Button::update(float dt)
 
 void Button::render(float cameraX, float cameraY)
 {
-    image->render(position->x - cameraX,
-                  position->y - cameraY);
+    image->render((float)position->x - cameraX,
+                  (float)position->y - cameraY);
 }

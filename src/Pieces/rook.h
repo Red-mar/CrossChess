@@ -3,6 +3,11 @@
 
 #include "piece.h"
 
+/* The rook can move diagonaly left and right
+ * and can move to neighboring tiles up and
+ * down. also he is able to move to any
+ * neighboring tiles for 1 step
+ */
 class Rook : public Piece
 {
     public:

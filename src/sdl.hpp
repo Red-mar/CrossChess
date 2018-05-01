@@ -6,8 +6,7 @@
 #include "SDL_mixer.h"
 #include "SDL_ttf.h"
 #include "SDL2_gfxPrimitives.h"
-
-#include "color.h"
+#include <string>
 
 #define UNUSED(x) ((void)(x))
 

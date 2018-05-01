@@ -1,8 +1,7 @@
 #include "bishop.h"
 
 Bishop::Bishop(Window *window, std::string filename) : Piece(window, filename)
-{
-}
+{}
 
 std::vector<Tile *> Bishop::canMove(Tile *currentTile, std::vector<Tile *> tiles)
 {

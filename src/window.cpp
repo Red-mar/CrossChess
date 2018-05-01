@@ -10,7 +10,7 @@ Window::Window(uint32_t width, uint32_t height, std::string title) : window(null
                                                                      originalHeight(height),
                                                                      isFullscreen(false),
                                                                      mTitle(title),
-                                                                     bg_color(0, 0, 0),
+                                                                     bg_color({0, 0, 0,0}),
                                                                      framerate(60),
                                                                      frame_delay(0),
                                                                      current_frame_delta(0)
@@ -131,13 +131,13 @@ void Window::restore()
     SDL_RestoreWindow(window);
 }
 
-void Window::fill(Color color)
+void Window::fill(SDL_Color color)
 {
     SDL_SetRenderDrawColor(renderer,
-                           color.r(),
-                           color.g(),
-                           color.b(),
-                           color.a());
+                           color.r,
+                           color.g,
+                           color.b,
+                           color.a);
     SDL_RenderClear(renderer);
 }
 
@@ -146,7 +146,7 @@ void Window::clear()
     fill(bg_color);
 }
 
-void Window::setBackgroundColor(Color color)
+void Window::setBackgroundColor(SDL_Color color)
 {
     bg_color = color;
 }
@@ -208,10 +208,6 @@ void Window::setIcon(std::string filepath)
     }
     SDL_SetWindowIcon(window, icon);
     SDL_FreeSurface(icon);
-}
-
-void Window::print(std::string text, int x, int y, Color color)
-{
 }
 
 void Window::resize(int width, int height, int windowFlags)

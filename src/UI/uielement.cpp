@@ -28,12 +28,12 @@ float UIElement::getY()
 
 float UIElement::getCenterX()
 {
-    return box->center.x;
+    return (float)box->center.x;
 }
 
 float UIElement::getCenterY()
 {
-    return box->center.y;
+    return (float)box->center.y;
 }
 
 int UIElement::getWidth()

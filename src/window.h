@@ -5,7 +5,6 @@
 #include "sdl.hpp"
 #include "timer.h"
 #include "shapes.h"
-#include "color.h"
 
 class Window
 {
@@ -37,10 +36,10 @@ class Window
 
         void center();
         void move(int x, int y);
-        void fill(Color color);
+        void fill(SDL_Color color);
 
         void clear();
-        void setBackgroundColor(Color color=Color(0,0,0));
+        void setBackgroundColor(SDL_Color color={0,0,0,0});
 
         void setTitle(std::string title);
 
@@ -66,11 +65,10 @@ class Window
         void drawBox(RotatedRectangle* r, SDL_Color color);
         void drawHexagon(Hexagon* hexagon, SDL_Color color);
         void drawFilledHexagon(Hexagon* hexagon, SDL_Color color);
-        void print(std::string text, int x, int y, Color color);
 
     private:
         std::string mTitle;
-        Color bg_color;
+        SDL_Color bg_color;
 
         
         Timer framerateTimer;

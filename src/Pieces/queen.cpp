@@ -1,10 +1,10 @@
 #include "queen.h"
 
 Queen::Queen(Window *window, std::string filename) : Piece(window, filename)
-{
-}
+{}
 
-std::vector<Tile*> Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles)
+std::vector<Tile*>
+Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles) // TODO this is ridiculous
 {
     std::vector<Tile *> result;
 

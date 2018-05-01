@@ -3,6 +3,9 @@
 
 #include "piece.h"
 
+/* The queen can move in any direction
+ * diagonaly or to neighboring tiles
+ */
 class Queen : public Piece
 {
   public:

@@ -2,8 +2,7 @@
 
 Pawn::Pawn(Window *window, std::string filename) : Piece(window, filename),
                                                    maxMovement(1)
-{
-}
+{}
 
 std::vector<Tile*> Pawn::canMove(Tile* currentTile, std::vector<Tile*> tiles)
 {
