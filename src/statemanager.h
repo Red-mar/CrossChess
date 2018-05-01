@@ -17,7 +17,7 @@ class StateManager
     private:
         Window* window;
         GameState* currentState;
-        int sharedInfo;
+        GameState::GameInfo sharedInfo;
 };
 
 #endif // !StateManager_H

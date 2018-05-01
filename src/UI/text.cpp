@@ -30,18 +30,12 @@ void Text::freeMemory()
 bool Text::loadText(std::string text, SDL_Color color)
 {
     freeMemory();
-    //causes acces violations?
-    /*if (textTexture != NULL)
-    {
-        SDL_DestroyTexture(textTexture);
-    }*/
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
     if (textSurface == NULL)
     {
         Log::error("TTF_RenderText_Solid: Unable to render text surface. Error:");
     } else 
     {
-        //freeMemory();
         textTexture = SDL_CreateTextureFromSurface(window->renderer, textSurface);
         if (textTexture == NULL)
         {

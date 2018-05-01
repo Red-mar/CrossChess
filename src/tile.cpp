@@ -1,6 +1,6 @@
 #include "tile.h"
 
-Tile::Tile(Window *window, int tileIndex, Point center, int size, Hex hexTile, Layout layout) : window(window),
+Tile::Tile(Window *window, Hex hexTile, Layout layout) : window(window),
                                                                                                 tileIndex(tileIndex),
                                                                                                 hexagon(nullptr),
                                                                                                 hexTile(hexTile),
@@ -21,11 +21,6 @@ Tile::~Tile()
     {
         delete piece;
     }
-}
-
-int Tile::getTileIndex()
-{
-    return tileIndex;
 }
 
 Hexagon *
@@ -68,7 +63,7 @@ void Tile::render(float x, float y)
 
     if (piece)
     {
-        piece->render((float)hexagon->points[4].x, (float)hexagon->points[4].y); // TODO easiest for now; need to line it up properly
+        piece->render((float)hexagon->points[4].x - 3, (float)hexagon->points[4].y + 5); // TODO easiest for now; need to line it up properly
     }
 }
 

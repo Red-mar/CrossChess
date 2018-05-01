@@ -10,11 +10,22 @@
 class Pawn : public Piece
 {
     public:
-        Pawn(Window* window, std::string filename);
+        enum Direction
+        {
+            BLACK_LEFT = 0,
+            WHITE_RIGHT = 1,
+            WHITE = 2,
+            WHITE_LEFT = 3,
+            BLACK_RIGHT = 4,
+            BLACK = 5,
+            MAX_DIRECTIONS = 6
+        };
+
+        Pawn(Window* window, std::string filename, Direction direction);
 
         std::vector<Tile*> canMove(Tile* currentTile, std::vector<Tile*> tiles);
     private:
-        int maxMovement;
+        Direction direction;
 };
 
 #endif // !PAWN_H

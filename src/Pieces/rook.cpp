@@ -1,7 +1,8 @@
 #include "rook.h"
 
 Rook::Rook(Window *window, std::string filename) : Piece(window, filename)
-{}
+{
+}
 
 std::vector<Tile *>
 Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
@@ -48,12 +49,11 @@ Rook::canMove(Tile *currentTile, std::vector<Tile *> tiles)
     {
         if (currentTile == tile)
             continue;
+        bool visionBlocked = false;
         if (((currentTile->getHexTile().r == tile->getHexTile().r && (hex_distance(currentTile->getHexTile(), tile->getHexTile()) <= 1)) ||
              (currentTile->getHexTile().s == tile->getHexTile().s && (hex_distance(currentTile->getHexTile(), tile->getHexTile()) <= 1)) ||
-             currentTile->getHexTile().q == tile->getHexTile().q) &&
-            tile->getPiece() == nullptr)
+             currentTile->getHexTile().q == tile->getHexTile().q))
         {
-            bool visionBlocked = false;
             for (auto tileInLine : hex_linedraw(currentTile->getHexTile(), tile->getHexTile())) // TODO: make linedraw that returns vector<tile>
             {
                 for (auto tilePieceCheck : tiles)

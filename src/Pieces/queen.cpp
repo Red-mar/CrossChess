@@ -20,8 +20,7 @@ Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles) // TODO this is ridi
             tempHexLeft = hex_add(tempHexLeft, hex_diagonals[0]);
             tempHexRight = hex_add(tempHexRight, hex_diagonals[3]);
             if (hex_diagonal_neighbor(currentTile->getHexTile(), 0) == tempHexLeft ||
-                hex_diagonal_neighbor(currentTile->getHexTile(), 3) == tempHexRight &&
-                    tile->getPiece() == nullptr)
+                hex_diagonal_neighbor(currentTile->getHexTile(), 3) == tempHexRight)
             {
 
                 for (auto tileInLine : hex_diagonal_linedraw(currentTile->getHexTile(), tile->getHexTile())) // NOTE: need seperate line for diagonals...
@@ -48,14 +47,14 @@ Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles) // TODO this is ridi
 
     for (auto tile : tiles)
     {
+        bool visionBlocked = false;
         if (currentTile == tile)
             continue;
         if ((currentTile->getHexTile().r == tile->getHexTile().r ||
              currentTile->getHexTile().s == tile->getHexTile().s ||
-             currentTile->getHexTile().q == tile->getHexTile().q) &&
-            tile->getPiece() == nullptr)
+             currentTile->getHexTile().q == tile->getHexTile().q))
         {
-            bool visionBlocked = false;
+            
             for (auto tileInLine : hex_linedraw(currentTile->getHexTile(), tile->getHexTile())) // TODO: make linedraw that returns vector<tile>
             {
                 for (auto tilePieceCheck : tiles)

@@ -10,12 +10,11 @@
 StateManager::StateManager(Window* window):
 	window(window),
 	currentState(nullptr),
-	sharedInfo(0)
+	sharedInfo({})
 {
 	this->currentState = new GameStateMenu(this->window);
 
 	this->currentState->load();
-	this->sharedInfo = 0;
 }
 
 StateManager::~StateManager()

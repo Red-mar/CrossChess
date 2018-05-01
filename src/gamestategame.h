@@ -6,10 +6,12 @@
 #include "window.h"
 #include "inputmanager.h"
 #include <vector>
+#include <unordered_map>
 #include "UI\uielement.h"
 #include "UI\button.h"
 #include "UI\label.h"
 #include "grid.h"
+#include "player.h"
 
 class GameStateGame : public GameState
 {
@@ -17,8 +19,8 @@ class GameStateGame : public GameState
         GameStateGame(Window* window);
         ~GameStateGame();
 
-        void load(int stack=0);
-        int unload();
+        void load(GameInfo stack= {});
+        GameInfo unload();
 
         GameState::StateCode update(float dt);
 
@@ -27,9 +29,13 @@ class GameStateGame : public GameState
         void updateInput();
         GameState::StateCode currentStateCode;
         Window* window;
-        std::vector<UIElement*> uiElements;
+        std::unordered_map<std::string, UIElement*> uiElements;
 
         Grid* grid;
+        std::vector<Player*> players;
+        Player* currentTurn;
+
+        void nextTurn();
 };
 
 #endif // GAMESTATEGAME_H

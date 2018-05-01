@@ -6,6 +6,7 @@
 #include "window.h"
 #include "inputmanager.h"
 #include <vector>
+#include <unordered_map>
 #include "UI\uielement.h"
 #include "UI\button.h"
 #include "UI\label.h"
@@ -16,8 +17,8 @@ class GameStateMenu : public GameState
         GameStateMenu(Window* window);
         ~GameStateMenu();
 
-        void load(int stack=0);
-        int unload();
+        void load(GameInfo stack= {});
+        GameInfo unload();
 
         GameState::StateCode update(float dt);
 
@@ -26,7 +27,7 @@ class GameStateMenu : public GameState
         void updateInput();
         GameState::StateCode currentStateCode;
         Window* window;
-        std::vector<UIElement*> uiElements;
+        std::unordered_map<std::string, UIElement*> uiElements;
 };
 
 #endif // GAMESTATEMENU_H

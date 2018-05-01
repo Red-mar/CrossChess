@@ -10,11 +10,10 @@ class Piece;
 class Tile
 {
   public:
-    Tile(Window *window, int tileIndex, Point center, int size, Hex hexTile, Layout layout);
+    Tile(Window *window, Hex hexTile, Layout layout);
     Tile();
     ~Tile();
 
-    int getTileIndex();
     Hexagon *getHexagon();
     Hex getHexTile();
     Piece *getPiece();

@@ -10,23 +10,23 @@ GameStateMenu::~GameStateMenu()
 {
 }
 
-void GameStateMenu::load(int stack)
+void GameStateMenu::load(GameInfo stack)
 {
     UNUSED(stack);
     Button* btnTest = new Button(window, 250, 350, 50, 20);
     Label* lblTest = new Label(window, 200, 200, 5, 5, "WELCOME to the main menu");
-    uiElements.push_back(btnTest);
-    uiElements.push_back(lblTest);
+    uiElements["btnTest"] = btnTest;
+    uiElements["lblTest"] = lblTest;
 }
 
-int GameStateMenu::unload()
+GameState::GameInfo GameStateMenu::unload()
 {
-    for(std::vector<UIElement*>::iterator it = uiElements.begin(); it != uiElements.end(); it++ )
+    for(std::unordered_map<std::string, UIElement*>::iterator it = uiElements.begin(); it != uiElements.end(); it++ )
     {
-        delete (*it);
+        delete it->second;
     }
 
-    return 0;
+    return {"player1", "player2"};
 }
 
 GameState::StateCode GameStateMenu::update(float dt)
@@ -34,7 +34,7 @@ GameState::StateCode GameStateMenu::update(float dt)
     updateInput();
     for(auto element : uiElements)
     {
-        element->update(dt);
+        element.second->update(dt);
     }
 
     return currentStateCode;
@@ -44,7 +44,7 @@ void GameStateMenu::render()
 {
     for(auto element : uiElements)
     {
-        element->render(0, 0);   
+        element.second->render(0, 0);   
     }
 }
 
@@ -59,11 +59,9 @@ void GameStateMenu::updateInput()
     }
     if (inputManager->isKeyDown(KEY_0))
     {
-        if (Label* label = dynamic_cast<Label*>(uiElements[1]))
-        {
-            label->setFontSize(72);
-            label->setText("text!");
-        }
+        Label* label = (Label*)uiElements["lblTest"];
+        label->setFontSize(72);
+        label->setText("test");
     }
     if (inputManager->isKeyDown(KEY_1))
     {
@@ -79,7 +77,7 @@ void GameStateMenu::updateInput()
             window->setFramerateLimit(0);
         }
     }
-    if (inputManager->isMouseUp(MOUSE_LEFT) && inputManager->isMouseInside(uiElements[0]->box))
+    if (inputManager->isMouseUp(MOUSE_LEFT) && inputManager->isMouseInside(uiElements["btnTest"]->box))
     {
         Log::debug("Clicked the button!");
         currentStateCode = GameState::GAME_START;

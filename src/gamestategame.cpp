@@ -10,24 +10,44 @@ GameStateGame::~GameStateGame()
 {
 }
 
-void GameStateGame::load(int stack)
+void GameStateGame::load(GameInfo stack)
 {
-    grid = new Grid(window, Point(window->mWidth / 2, window->mHeight / 2), Point(35, 35), 4);
+    players.push_back(new Player(stack.player1name));
+    players.push_back(new Player(stack.player2name));
+    grid = new Grid(window, Point(window->mWidth / 2, window->mHeight / 2), Point(35, 35), 4, players);
+    currentTurn = players[0];
+
+    Label *lblPlayer1 = new Label(window, 0, 0, 5, 5, stack.player1name);
+    Label *lblPlayer2 = new Label(window, window->mWidth - 200, 0, 200, 100, stack.player2name);
+    Label *lblCurrentPlayer = new Label(window, (window->mWidth / 2) - 200, 0, 5, 5, "Current Player: N/A");
+    //Button *btnEndTurn = new Button(window, 0, window->mHeight - 100, 100, 100);
+    uiElements["lblPlayer1"] = lblPlayer1;
+    uiElements["lblPlayer2"] = lblPlayer2;
+    uiElements["lblCurrentPlayer"] = lblCurrentPlayer;
+    //uiElements["btnEndTurn"] = btnEndTurn;
 }
 
-int GameStateGame::unload()
+GameState::GameInfo GameStateGame::unload()
 {
-    for (std::vector<UIElement *>::iterator it = uiElements.begin(); it != uiElements.end(); it++)
+    for (std::unordered_map<std::string, UIElement *>::iterator it = uiElements.begin(); it != uiElements.end(); it++)
+    {
+        delete it->second;
+    }
+    for (std::vector<Player *>::iterator it = players.begin(); it != players.end(); it++)
     {
         delete (*it);
     }
     delete grid;
-    return 0;
+    return {"", ""};
 }
 
 void GameStateGame::render()
 {
     grid->render(0, 0);
+    for (auto element : uiElements)
+    {
+        element.second->render(0, 0);
+    }
 }
 
 GameState::StateCode
@@ -36,8 +56,11 @@ GameStateGame::update(float dt)
     updateInput();
     for (auto element : uiElements)
     {
-        element->update(dt);
+        element.second->update(dt);
     }
+
+    Label* label = (Label*)uiElements["lblCurrentPlayer"];
+    label->setText("Current Player = " + grid->getCurrentPlayer()->getName());
 
     return currentStateCode;
 }

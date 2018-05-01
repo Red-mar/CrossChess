@@ -7,6 +7,9 @@
 #include "Pieces/Rook.h"
 #include "Pieces/King.h"
 #include "Pieces/Knight.h"
+#include "Pieces/Queen.h"
+#include "Pieces/Pawn.h"
+#include "player.h"
 
 #include <vector>
 #include <unordered_set>
@@ -14,12 +17,13 @@
 class Grid
 {
   public:
-    Grid(Window *window, Point origin, Point size, int mapSize);
+    Grid(Window *window, Point origin, Point size, int mapSize, std::vector<Player*> players);
     ~Grid();
 
     int getWidth();
     int getHeight();
 
+    Player* getCurrentPlayer();
     void render(float xPos, float yPos);
     Tile* getSelectedTile();
     bool selectTile(Point point);
@@ -30,12 +34,14 @@ class Grid
     int mapSize;
     std::vector<Tile *> tiles;
     Tile *selectedTile;
-    std::unordered_set<Hex> map;
     Orientation hexOrientation = layout_flat;
     Point hexSize;
     Point hexOrigin;
+    std::vector<Player*> players;
+    Player* currentPlayer;
 
     void fillBoard();
+    void nextTurn();
 };
 
 #endif // !GRID_H
