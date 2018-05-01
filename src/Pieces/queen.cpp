@@ -1,10 +1,11 @@
 #include "queen.h"
 
 Queen::Queen(Window *window, std::string filename) : Piece(window, filename)
-{}
+{
+}
 
-std::vector<Tile*>
-Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles) // TODO this is ridiculous
+std::vector<Tile *>
+Queen::canMove(Tile *currentTile, std::vector<Tile *> tiles) // TODO this is ridiculous
 {
     std::vector<Tile *> result;
 
@@ -22,16 +23,28 @@ Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles) // TODO this is ridi
             if (hex_diagonal_neighbor(currentTile->getHexTile(), 0) == tempHexLeft ||
                 hex_diagonal_neighbor(currentTile->getHexTile(), 3) == tempHexRight)
             {
-
+                int blockedTilesInLine = 0;                                                                  //I do not want to block the first piece
                 for (auto tileInLine : hex_diagonal_linedraw(currentTile->getHexTile(), tile->getHexTile())) // NOTE: need seperate line for diagonals...
                 {
+                    if (blockedTilesInLine != 0)
+                    {
+                        visionBlocked = true;
+                    }
                     for (auto tilePieceCheck : tiles)
                     {
                         if (tilePieceCheck->getHexTile() != currentTile->getHexTile() &&
                             tilePieceCheck->getHexTile() == tileInLine && // Find which tile matches the hex and if
                             tilePieceCheck->getPiece())                   // there is a piece on there, if yes vision is blocked
                         {
-                            visionBlocked = true;
+                            blockedTilesInLine++;
+                            if (blockedTilesInLine == 1)
+                            {
+                                visionBlocked = false;
+                            }
+                            else
+                            {
+                                visionBlocked = true;
+                            }
                         }
                     }
                 }
@@ -54,16 +67,28 @@ Queen::canMove(Tile* currentTile, std::vector<Tile*> tiles) // TODO this is ridi
              currentTile->getHexTile().s == tile->getHexTile().s ||
              currentTile->getHexTile().q == tile->getHexTile().q))
         {
-            
+            int blockedTilesInLine = 0;                                                         //I do not want to block the first piece
             for (auto tileInLine : hex_linedraw(currentTile->getHexTile(), tile->getHexTile())) // TODO: make linedraw that returns vector<tile>
             {
+                if (blockedTilesInLine != 0)
+                {
+                    visionBlocked = true;
+                }
                 for (auto tilePieceCheck : tiles)
                 {
                     if (tilePieceCheck->getHexTile() != currentTile->getHexTile() &&
                         tilePieceCheck->getHexTile() == tileInLine && // Find which tile matches the hex and if
                         tilePieceCheck->getPiece())                   // there is a piece on there, if yes vision is blocked
                     {
-                        visionBlocked = true;
+                        blockedTilesInLine++;
+                        if (blockedTilesInLine == 1)
+                        {
+                            visionBlocked = false;
+                        }
+                        else
+                        {
+                            visionBlocked = true;
+                        }
                     }
                 }
             }
