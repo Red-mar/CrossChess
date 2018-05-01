@@ -10,7 +10,7 @@ int main(int argc, char *args[])
     int width = 800;
     int height = 600;
 
-    Window window(width, height, "Test Window");
+    Window window(width, height, "Cross Chess");
 
     StateManager manager(&window);
 

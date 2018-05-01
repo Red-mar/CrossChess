@@ -32,7 +32,6 @@
 *.app
 
 build
-assets
 *.bat
 .git
 .vscode
