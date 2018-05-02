@@ -2,6 +2,8 @@
 Chess variant based on hexagons.
 [More info](https://en.wikipedia.org/wiki/Cross_Chess)
 
+<img src="https://github.com/Red-mar/CrossChess/blob/master/assets/crossgonalchess.PNG">
+
 ## Dependencies
 
 - [SDL2](http://www.libsdl.org)
