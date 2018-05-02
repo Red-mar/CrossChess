@@ -1,7 +1,7 @@
 #include "log.h"
 #include <sstream>
 
-bool Log::isDebugMode = true;
+bool Log::isDebugMode = false;
 bool Log::isVerboseMode = false;
 
 std::string bold_red     = "";

@@ -17,7 +17,7 @@ Sprite::Sprite(Window *window, std::string filename) : window(window),
     }
     else
     {
-        Log::log("Sprite::load loaded " + filename);
+        Log::debug("Sprite::load loaded " + filename);
 
         int w, h;
 
