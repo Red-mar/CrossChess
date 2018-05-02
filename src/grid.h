@@ -39,6 +39,7 @@ class Grid
     Point hexOrigin;
     std::vector<Player*> players;
     Player* currentPlayer;
+    Player* otherPlayer;
 
     void fillBoard();
     void nextTurn();

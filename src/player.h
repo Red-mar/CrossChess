@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "piece.h"
+#include "Pieces/King.h"
 
 class Player
 {
@@ -12,7 +13,9 @@ class Player
 
         std::string getName();
         void addPiece(Piece* npiece);
+        void removePiece(Piece* piece);
         bool hasPiece(Piece* piece);
+        bool hasKing();
 
     private:
         std::string name;

@@ -20,6 +20,7 @@ void GameStateGame::load(GameInfo stack)
     Label *lblPlayer1 = new Label(window, 0, 0, 5, 5, stack.player1name);
     Label *lblPlayer2 = new Label(window, window->mWidth - 200, 0, 200, 100, stack.player2name);
     Label *lblCurrentPlayer = new Label(window, (window->mWidth / 2) - 200, 0, 5, 5, "Current Player: N/A");
+    lblCurrentPlayer->setText("Current Player = " + grid->getCurrentPlayer()->getName());
     //Button *btnEndTurn = new Button(window, 0, window->mHeight - 100, 100, 100);
     uiElements["lblPlayer1"] = lblPlayer1;
     uiElements["lblPlayer2"] = lblPlayer2;
@@ -59,8 +60,16 @@ GameStateGame::update(float dt)
         element.second->update(dt);
     }
 
-    Label* label = (Label*)uiElements["lblCurrentPlayer"];
-    label->setText("Current Player = " + grid->getCurrentPlayer()->getName());
+    if (grid->getCurrentPlayer() != currentTurn)
+    {
+        currentTurn = grid->getCurrentPlayer();
+        Label *label = (Label *)uiElements["lblCurrentPlayer"];
+        label->setText("Current Player = " + grid->getCurrentPlayer()->getName());
+        if (!grid->getCurrentPlayer()->hasKing())
+        {
+            currentStateCode = MAIN_MENU;
+        }
+    }
 
     return currentStateCode;
 }

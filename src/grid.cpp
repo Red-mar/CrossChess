@@ -8,7 +8,8 @@ Grid::Grid(Window *window, Point origin, Point size, int mapSize, std::vector<Pl
                                                                                                    hexOrigin(origin),
                                                                                                    selectedTile(nullptr),
                                                                                                    players(players),
-                                                                                                   currentPlayer(players[0])
+                                                                                                   currentPlayer(players[0]),
+                                                                                                   otherPlayer(players[1])
 {
     for (int q = -mapSize; q <= mapSize; q++)
     {
@@ -40,13 +41,13 @@ void Grid::fillBoard() // TODO: find a better way
     {
         //player 1
 
-        if (tile->getHexTile().q == -4 && tile->getHexTile().r == 4||
-            tile->getHexTile().q == -3 && tile->getHexTile().r == 3||
-            tile->getHexTile().q == -2 && tile->getHexTile().r == 3||
-            tile->getHexTile().q == -1 && tile->getHexTile().r == 2||
+        if (tile->getHexTile().q == -4 && tile->getHexTile().r == 4 ||
+            tile->getHexTile().q == -3 && tile->getHexTile().r == 3 ||
+            tile->getHexTile().q == -2 && tile->getHexTile().r == 3 ||
+            tile->getHexTile().q == -1 && tile->getHexTile().r == 2 ||
             tile->getHexTile().q == 0 && tile->getHexTile().r == 2 ||
-            tile->getHexTile().q == 1 && tile->getHexTile().r == 1||
-            tile->getHexTile().q == 2 && tile->getHexTile().r == 1||
+            tile->getHexTile().q == 1 && tile->getHexTile().r == 1 ||
+            tile->getHexTile().q == 2 && tile->getHexTile().r == 1 ||
             tile->getHexTile().q == 3 && tile->getHexTile().r == 0 ||
             tile->getHexTile().q == 4 && tile->getHexTile().r == 0)
         {
@@ -54,15 +55,15 @@ void Grid::fillBoard() // TODO: find a better way
             players[0]->addPiece(pawn);
             tile->setPiece(pawn);
         }
-        if (tile->getHexTile().q == -3 && tile->getHexTile().r == 4||
-            tile->getHexTile().q == 0 && tile->getHexTile().r == 3||
+        if (tile->getHexTile().q == -3 && tile->getHexTile().r == 4 ||
+            tile->getHexTile().q == 0 && tile->getHexTile().r == 3 ||
             tile->getHexTile().q == 3 && tile->getHexTile().r == 1)
         {
             Rook *rook = new Rook(window, "assets/wrook.png");
             players[0]->addPiece(rook);
             tile->setPiece(rook);
         }
-        if (tile->getHexTile().q == -1 && tile->getHexTile().r == 3||
+        if (tile->getHexTile().q == -1 && tile->getHexTile().r == 3 ||
             tile->getHexTile().q == 1 && tile->getHexTile().r == 2)
         {
             Bishop *bishop = new Bishop(window, "assets/wbishop.png");
@@ -70,8 +71,8 @@ void Grid::fillBoard() // TODO: find a better way
             tile->setPiece(bishop);
         }
 
-        if (tile->getHexTile().q == 0 && tile->getHexTile().r == 4||
-            tile->getHexTile().q == -2 && tile->getHexTile().r == 4||
+        if (tile->getHexTile().q == 0 && tile->getHexTile().r == 4 ||
+            tile->getHexTile().q == -2 && tile->getHexTile().r == 4 ||
             tile->getHexTile().q == 2 && tile->getHexTile().r == 2)
         {
             Knight *knight = new Knight(window, "assets/wunicorn.png");
@@ -91,19 +92,16 @@ void Grid::fillBoard() // TODO: find a better way
             tile->setPiece(queen);
         }
 
-
         // player 2
 
-        
-
-        if (tile->getHexTile().q == -4 && tile->getHexTile().r == 0||
-            tile->getHexTile().q == -3 && tile->getHexTile().r == 0||
-            tile->getHexTile().q == -2 && tile->getHexTile().r == -1||
-            tile->getHexTile().q == -1 && tile->getHexTile().r == -1||
-            tile->getHexTile().q == -1 && tile->getHexTile().r == -1||
+        if (tile->getHexTile().q == -4 && tile->getHexTile().r == 0 ||
+            tile->getHexTile().q == -3 && tile->getHexTile().r == 0 ||
+            tile->getHexTile().q == -2 && tile->getHexTile().r == -1 ||
+            tile->getHexTile().q == -1 && tile->getHexTile().r == -1 ||
+            tile->getHexTile().q == -1 && tile->getHexTile().r == -1 ||
             tile->getHexTile().q == 0 && tile->getHexTile().r == -2 ||
-            tile->getHexTile().q == 1 && tile->getHexTile().r == -2||
-            tile->getHexTile().q == 2 && tile->getHexTile().r == -3||
+            tile->getHexTile().q == 1 && tile->getHexTile().r == -2 ||
+            tile->getHexTile().q == 2 && tile->getHexTile().r == -3 ||
             tile->getHexTile().q == 3 && tile->getHexTile().r == -3 ||
             tile->getHexTile().q == 4 && tile->getHexTile().r == -4)
         {
@@ -111,23 +109,23 @@ void Grid::fillBoard() // TODO: find a better way
             players[1]->addPiece(pawn);
             tile->setPiece(pawn);
         }
-        if (tile->getHexTile().q == -3 && tile->getHexTile().r == -1||
-            tile->getHexTile().q == 0 && tile->getHexTile().r == -3||
+        if (tile->getHexTile().q == -3 && tile->getHexTile().r == -1 ||
+            tile->getHexTile().q == 0 && tile->getHexTile().r == -3 ||
             tile->getHexTile().q == 3 && tile->getHexTile().r == -4)
         {
             Rook *rook = new Rook(window, "assets/brook.png");
             players[1]->addPiece(rook);
             tile->setPiece(rook);
         }
-        if (tile->getHexTile().q == -1 && tile->getHexTile().r == -2||
+        if (tile->getHexTile().q == -1 && tile->getHexTile().r == -2 ||
             tile->getHexTile().q == 1 && tile->getHexTile().r == -3)
         {
             Bishop *bishop = new Bishop(window, "assets/bbishop.png");
             players[1]->addPiece(bishop);
             tile->setPiece(bishop);
         }
-        if (tile->getHexTile().q == 0 && tile->getHexTile().r == -4||
-            tile->getHexTile().q == 2 && tile->getHexTile().r == -4||
+        if (tile->getHexTile().q == 0 && tile->getHexTile().r == -4 ||
+            tile->getHexTile().q == 2 && tile->getHexTile().r == -4 ||
             tile->getHexTile().q == -2 && tile->getHexTile().r == -2)
         {
             Knight *knight = new Knight(window, "assets/bunicorn.png");
@@ -190,8 +188,15 @@ bool Grid::selectTile(Point point)
 
                 for (auto tile : selectedTile->getPiece()->canMove(selectedTile, tiles))
                 {
-                    tile->setSelected(true);
-                    tile->setColor({0, 255, 0, 55});
+                    if (!tile->getPiece())
+                    {
+                        tile->setSelected(true);
+                        tile->setColor({0, 255, 0, 55});
+                    } else if (!currentPlayer->hasPiece(tile->getPiece()))
+                    {
+                        tile->setSelected(true);
+                        tile->setColor({255, 0, 0, 55});
+                    }
                 }
             }
             else
@@ -199,7 +204,7 @@ bool Grid::selectTile(Point point)
                 Log::debug("current piece is nullptr");
             }
 
-            tile->setColor({255, 0, 0, 55});
+            tile->setColor({0, 0, 255, 55});
             break;
         }
     }
@@ -238,7 +243,10 @@ bool Grid::movePiece(Point point)
                     if (currentPlayer->hasPiece(tile->getPiece()))
                     {
                         break;
-                    } else {
+                    }
+                    else
+                    {
+                        otherPlayer->removePiece(tile->getPiece());
                         delete tile->getPiece();
                     }
                 }
@@ -280,10 +288,12 @@ void Grid::nextTurn()
     if (currentPlayer == players[0])
     {
         currentPlayer = players[1];
+        otherPlayer = players[0];
     }
     else
     {
         currentPlayer = players[0];
+        otherPlayer = players[1];
     }
 }
 
