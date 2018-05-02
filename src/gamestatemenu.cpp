@@ -64,12 +64,6 @@ void GameStateMenu::updateInput()
     {
         currentStateCode = GameState::QUIT;
     }
-    if (inputManager->isKeyDown(KEY_0))
-    {
-        Label *label = (Label *)uiElements["lblTest"];
-        label->setFontSize(72);
-        label->setText("test");
-    }
     if (inputManager->isKeyDown(KEY_1))
     {
         currentStateCode = GameState::GAME_START;
@@ -85,8 +79,7 @@ void GameStateMenu::updateInput()
         {
             window->resize(1920, 1080, SDL_WINDOW_FULLSCREEN_DESKTOP);
         }
-        unload();
-        load();
+        resetUI();
     }
     if (inputManager->isMouseUp(MOUSE_LEFT))
     {
@@ -105,4 +98,11 @@ void GameStateMenu::updateInput()
             currentStateCode = GameState::GAME_START;
         }
     }
+}
+
+void GameStateMenu::resetUI()
+{
+    uiElements["lblTitle"]->position = new Point((window->mWidth / 2) - (uiElements["lblTitle"]->getWidth() / 2), (window->mHeight / 4) - uiElements["lblTitle"]->getHeight());
+    uiElements["btnAi"]->position = new Point((window->mWidth / 4) * 3 - 50, (window->mHeight / 4) * 3 - 20);
+    uiElements["btnLocal"]->position = new Point((window->mWidth / 2) - (window->mWidth / 4) - 50, (window->mHeight / 4) * 3 - 20);
 }

@@ -25,6 +25,7 @@ class GameStateMenu : public GameState
         void render();
     private:
         void updateInput();
+        void resetUI();
         GameState::StateCode currentStateCode;
         GameInfo currentGameInfo;
         Window* window;
