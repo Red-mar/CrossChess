@@ -11,7 +11,11 @@
 #include "UI\button.h"
 #include "UI\label.h"
 #include "grid.h"
+
 #include "player.h"
+#include "ai/localplayer.h"
+
+#include "ai/randomai.h"
 
 class GameStateGame : public GameState
 {

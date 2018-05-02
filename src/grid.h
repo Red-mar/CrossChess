@@ -10,6 +10,7 @@
 #include "Pieces/Queen.h"
 #include "Pieces/Pawn.h"
 #include "player.h"
+#include "ai/ai.h"
 
 #include <vector>
 #include <unordered_set>

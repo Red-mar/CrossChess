@@ -10,6 +10,7 @@ class Player
 {
     public:
         Player(std::string name);
+        virtual ~Player();
 
         std::string getName();
         void addPiece(Piece* npiece);
@@ -17,7 +18,7 @@ class Player
         bool hasPiece(Piece* piece);
         bool hasKing();
 
-    private:
+    protected:
         std::string name;
         std::vector<Piece*> pieces;
 };

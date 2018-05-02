@@ -192,7 +192,8 @@ bool Grid::selectTile(Point point)
                     {
                         tile->setSelected(true);
                         tile->setColor({0, 255, 0, 55});
-                    } else if (!currentPlayer->hasPiece(tile->getPiece()))
+                    }
+                    else if (!currentPlayer->hasPiece(tile->getPiece()))
                     {
                         tile->setSelected(true);
                         tile->setColor({255, 0, 0, 55});
@@ -285,7 +286,16 @@ bool Grid::movePiece(Point point)
 
 void Grid::nextTurn()
 {
-    if (currentPlayer == players[0])
+    if (Ai *ai = dynamic_cast<Ai *>(otherPlayer))
+    {
+        std::swap(currentPlayer, otherPlayer);
+        selectedTile = ai->selectTile(tiles);
+        selectedTile->setSelected(true);
+        selectedTile->setColor({0, 255, 0, 55});
+        Point point = ai->selectMove(tiles, {hexOrientation, hexSize, hexOrigin});
+        movePiece(point);
+    } 
+    else if (currentPlayer == players[0])
     {
         currentPlayer = players[1];
         otherPlayer = players[0];

@@ -12,8 +12,8 @@ GameStateGame::~GameStateGame()
 
 void GameStateGame::load(GameInfo stack)
 {
-    players.push_back(new Player(stack.player1name));
-    players.push_back(new Player(stack.player2name));
+    players.push_back(new LocalPlayer(stack.player1name));
+    players.push_back(new RandomAi(stack.player2name));
     grid = new Grid(window, Point(window->mWidth / 2, window->mHeight / 2), Point(35, 35), 4, players);
     currentTurn = players[0];
 
@@ -67,7 +67,7 @@ GameStateGame::update(float dt)
         label->setText("Current Player = " + grid->getCurrentPlayer()->getName());
         if (!grid->getCurrentPlayer()->hasKing())
         {
-            currentStateCode = MAIN_MENU;
+            currentStateCode = MAIN_MENU; // TODO: fadeout and end screen or something
         }
     }
 
