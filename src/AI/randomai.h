@@ -2,6 +2,7 @@
 #define RANDOMAI_H
 
 #include "ai.h"
+#include "log.h"
 
 class RandomAi : public Player, public Ai
 {

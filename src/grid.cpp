@@ -289,7 +289,6 @@ void Grid::nextTurn()
     Ai *ai;
     if ((ai = dynamic_cast<Ai *>(otherPlayer)) && otherPlayer->hasKing())
     {
-
         std::swap(currentPlayer, otherPlayer);
         selectedTile = ai->selectTile(tiles);
         selectedTile->setSelected(true);
