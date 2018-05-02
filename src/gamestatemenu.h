@@ -26,6 +26,7 @@ class GameStateMenu : public GameState
     private:
         void updateInput();
         GameState::StateCode currentStateCode;
+        GameInfo currentGameInfo;
         Window* window;
         std::unordered_map<std::string, UIElement*> uiElements;
 };

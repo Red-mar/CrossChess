@@ -12,8 +12,21 @@ GameStateGame::~GameStateGame()
 
 void GameStateGame::load(GameInfo stack)
 {
-    players.push_back(new LocalPlayer(stack.player1name));
-    players.push_back(new RandomAi(stack.player2name));
+    switch (stack.gameType)
+    {
+    case LOCAL:
+        players.push_back(new LocalPlayer(stack.player1name));
+        players.push_back(new LocalPlayer(stack.player2name));
+        break;
+    case AI:
+        players.push_back(new LocalPlayer(stack.player1name));
+        players.push_back(new RandomAi(stack.player2name));
+        break;
+    default:
+        Log::error("GameType not supported!");
+        break;
+    }
+
     grid = new Grid(window, Point(window->mWidth / 2, window->mHeight / 2), Point(35, 35), 4, players);
     currentTurn = players[0];
 
@@ -21,11 +34,9 @@ void GameStateGame::load(GameInfo stack)
     Label *lblPlayer2 = new Label(window, window->mWidth - 200, 0, 200, 100, stack.player2name);
     Label *lblCurrentPlayer = new Label(window, (window->mWidth / 2) - 200, 0, 5, 5, "Current Player: N/A");
     lblCurrentPlayer->setText("Current Player = " + grid->getCurrentPlayer()->getName());
-    //Button *btnEndTurn = new Button(window, 0, window->mHeight - 100, 100, 100);
     uiElements["lblPlayer1"] = lblPlayer1;
     uiElements["lblPlayer2"] = lblPlayer2;
     uiElements["lblCurrentPlayer"] = lblCurrentPlayer;
-    //uiElements["btnEndTurn"] = btnEndTurn;
 }
 
 GameState::GameInfo GameStateGame::unload()
@@ -79,7 +90,8 @@ void GameStateGame::updateInput()
     InputManager *inputManager = InputManager::getInstance();
 
     inputManager->update();
-    if (inputManager->quitRequested())
+    if (inputManager->quitRequested() ||
+        inputManager->isKeyDown(KEY_ESCAPE))
     {
         currentStateCode = GameState::QUIT;
     }
@@ -99,7 +111,7 @@ void GameStateGame::updateInput()
             Log::debug("selected tile!");
     }
 
-    if (inputManager->isKeyDown(KEY_RETURN))
+    if (inputManager->isKeyDown(KEY_RETURN) && inputManager->alt())
     {
         if (window->mHeight == 1080)
         {

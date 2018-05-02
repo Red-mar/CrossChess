@@ -1,10 +1,11 @@
 #include "button.h"
 
-Button::Button(Window *window, float x, float y, int w, int h) : window(window),
+Button::Button(Window *window, float x, float y, int w, int h, std::string filename) : window(window),
                                                                  UIElement(x, y, w, h),
                                                                  image(nullptr)
 {
-    image = new Sprite(window, "assets/button.png");
+    image = new Sprite(window, filename);
+    image->setSize(w,h);
 }
 
 Button::~Button()

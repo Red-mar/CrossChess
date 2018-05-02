@@ -7,7 +7,7 @@
 class Button : public UIElement
 {
     public:
-        Button(Window* window, float x, float y, int w, int h);
+        Button(Window* window, float x, float y, int w, int h, std::string filename);
         ~Button();
 
         void update(float dt);

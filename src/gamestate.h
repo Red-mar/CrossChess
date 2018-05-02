@@ -6,10 +6,19 @@
 class GameState
 {
     public:
+        enum GameType
+        {
+            LOCAL,
+            AI,
+            ONLINE,
+            MAX_GAMETYPE
+        };
+
         struct GameInfo
         {
             std::string player1name;
             std::string player2name;
+            GameType gameType;
         };
 
         enum StateCode
