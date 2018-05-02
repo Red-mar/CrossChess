@@ -1,16 +1,16 @@
 #include "randomai.h"
 #include "time.h"
-RandomAi::RandomAi(std::string name) : Player(name),
-                                       selectedTile(nullptr)
+RandomAi::RandomAi(std::string name) : Player(name)
 {
     srand(time(NULL));
+    selectedTile = nullptr;
 }
 
 Tile *
 RandomAi::selectTile(std::vector<Tile *> tiles)
 {
     //check if the king can be taken by the opponent
-    for(auto tile : tiles)
+    for (auto tile : tiles)
     {
         if (tile->getPiece() && !hasPiece(tile->getPiece()))
         {
@@ -23,11 +23,11 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
                     availableMoves.push_back(move);
                 }
             }
-            for(auto move : availableMoves)
+            for (auto move : availableMoves)
             {
-                King* king;
+                King *king;
                 if (move->getPiece() &&
-                    (king = dynamic_cast<King*>(move->getPiece())))
+                    (king = dynamic_cast<King *>(move->getPiece())))
                 {
                     Log::log("Randomai says: Help my king is beign taken and I don't know what to do!");
                 }
@@ -49,7 +49,7 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
                     availableMoves.push_back(move);
                 }
             }
-            for(auto move : availableMoves)
+            for (auto move : availableMoves)
             {
                 if (move->getPiece())
                 {
@@ -62,29 +62,36 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
     }
 
     // if it can't take any piece do a random move
+    std::vector<Tile *> availablePieces;
     for (auto tile : tiles)
     {
-        if (rand() % tiles.size() == 1 &&
-            hasPiece(tile->getPiece()))
+        if (hasPiece(tile->getPiece()))
         {
-            std::vector<Tile *> availableMoves;
-            for (auto move : tile->getPiece()->canMove(tile, tiles))
-            {
-                if (!move->getPiece() ||
-                    !hasPiece(move->getPiece()))
-                {
-                    availableMoves.push_back(move);
-                }
-            }
-            if (availableMoves.size())
-            {
-                Log::log("Randomai says: If I don't know what I'm doing you won't either!");
-                selectedTile = tile;
-                return tile;
-            }
+            availablePieces.push_back(tile);
         }
     }
-    return selectTile(tiles);
+    bool pieceFound = false;
+    Tile *randomPiece;
+    while (!pieceFound) // should be an easier way to get a random viable piece move
+    {
+        randomPiece = availablePieces[rand() % availablePieces.size()];
+        std::vector<Tile *> availableMoves;
+        for (auto move : randomPiece->getPiece()->canMove(randomPiece, tiles))
+        {
+            if (!move->getPiece() ||
+                !hasPiece(move->getPiece()))
+            {
+                availableMoves.push_back(move);
+            }
+        }
+        if (availableMoves.size())
+        {
+            Log::log("Randomai says: If I don't know what I'm doing you won't either!");
+            selectedTile = randomPiece;
+            pieceFound = true;
+        }
+    }
+    return randomPiece;
 }
 
 Point RandomAi::selectMove(std::vector<Tile *> tiles, Layout layout)
@@ -96,7 +103,7 @@ Point RandomAi::selectMove(std::vector<Tile *> tiles, Layout layout)
             !hasPiece(move->getPiece()))
         {
             return hex_to_pixel(layout,
-                        move->getHexTile()); // return immediately if it can take a piece
+                                move->getHexTile()); // return immediately if it can take a piece
         }
 
         if (!move->getPiece() ||
@@ -109,3 +116,8 @@ Point RandomAi::selectMove(std::vector<Tile *> tiles, Layout layout)
                         availableMoves[(rand() % availableMoves.size())]->getHexTile());
 }
 
+Tile *
+RandomAi::getSelectedTile()
+{
+    return selectedTile;
+}

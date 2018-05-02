@@ -44,6 +44,7 @@ class Grid
 
     void fillBoard();
     void nextTurn();
+    //int threadFunction(void * data);
 };
 
 #endif // !GRID_H

@@ -5,13 +5,15 @@
 
 class Ai
 {
-    public:
-        ~Ai();
+  public:
 
-        virtual Tile* selectTile(std::vector<Tile*> tiles) =0;
-        virtual Point selectMove(std::vector<Tile*> tiles, Layout layout) =0;
+    ~Ai();
+    virtual Tile *getSelectedTile() = 0;
+    virtual Tile *selectTile(std::vector<Tile *> tiles) = 0;
+    virtual Point selectMove(std::vector<Tile *> tiles, Layout layout) = 0;
 
-    private:
+  protected:
+    Tile *selectedTile;
 };
 
 #endif // !AI_H

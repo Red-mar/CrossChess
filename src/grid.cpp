@@ -290,11 +290,13 @@ void Grid::nextTurn()
     if ((ai = dynamic_cast<Ai *>(otherPlayer)) && otherPlayer->hasKing())
     {
         std::swap(currentPlayer, otherPlayer);
+        
         selectedTile = ai->selectTile(tiles);
         selectedTile->setSelected(true);
         selectedTile->setColor({0, 255, 0, 55});
         Point point = ai->selectMove(tiles, {hexOrientation, hexSize, hexOrigin});
         movePiece(point);
+        
     }
     else if (currentPlayer == players[0])
     {
