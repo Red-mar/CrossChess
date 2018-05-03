@@ -1,6 +1,6 @@
 #include "randomai.h"
 #include "time.h"
-RandomAi::RandomAi(std::string name) : Player(name)
+RandomAi::RandomAi(std::string name) : Ai(name)
 {
     srand(time(NULL));
     selectedTile = nullptr;
@@ -10,26 +10,19 @@ Tile *
 RandomAi::selectTile(std::vector<Tile *> tiles)
 {
     //check if the king can be taken by the opponent
+
     for (auto tile : tiles)
     {
         if (tile->getPiece() && !hasPiece(tile->getPiece()))
         {
-            std::vector<Tile *> availableMoves;
-            for (auto move : tile->getPiece()->canMove(tile, tiles))
-            {
-                if (!move->getPiece() ||
-                    hasPiece(move->getPiece()))
-                {
-                    availableMoves.push_back(move);
-                }
-            }
+            std::vector<Tile *> availableMoves = getOpponentAvailableMoves(tile, tiles);
             for (auto move : availableMoves)
             {
                 King *king;
                 if (move->getPiece() &&
                     (king = dynamic_cast<King *>(move->getPiece())))
                 {
-                    Log::log("Randomai says: Help my king is beign taken and I don't know what to do!");
+                    Log::log("Randomai says: Help my king is being taken and I don't know what to do!");
                 }
             }
         }
@@ -53,9 +46,32 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
             {
                 if (move->getPiece())
                 {
-                    Log::log("Randomai says: Instead of a random move I will take your piece!");
-                    selectedTile = tile;
-                    return tile;
+                    //check if when it moves his piece could be taken
+                    bool pieceIsDefended = false;
+                    for (auto opponentTile : tiles)
+                    {
+                        if (opponentTile->getPiece() && !hasPiece(opponentTile->getPiece()))
+                        {
+                            for (auto opponentMove : getOpponentDefendMoves(opponentTile, tiles))
+                            {
+                                if (opponentMove == move)
+                                {
+                                    if (opponentTile->getPiece()->getRelativeValue() < tile->getPiece()->getRelativeValue())
+                                    {
+                                        pieceIsDefended = true;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                    }
+
+                    if (!pieceIsDefended)
+                    {
+                        Log::log("Randomai says: Instead of a random move I will take your piece!");
+                        selectedTile = tile;
+                        return tile;
+                    }
                 }
             }
         }

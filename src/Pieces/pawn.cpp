@@ -1,6 +1,6 @@
 #include "pawn.h"
 
-Pawn::Pawn(Window *window, std::string filename, Direction direction) : Piece(window, filename), direction(direction)
+Pawn::Pawn(Window *window, std::string filename, Direction direction) : Piece(window, filename, 1), direction(direction)
 {
 }
 

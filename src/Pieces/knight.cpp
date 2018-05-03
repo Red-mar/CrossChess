@@ -1,6 +1,6 @@
 #include "knight.h"
 
-Knight::Knight(Window *window, std::string filename) : Piece(window, filename)
+Knight::Knight(Window *window, std::string filename) : Piece(window, filename, 3)
 {
 }
 

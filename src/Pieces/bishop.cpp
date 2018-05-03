@@ -1,6 +1,6 @@
 #include "bishop.h"
 
-Bishop::Bishop(Window *window, std::string filename) : Piece(window, filename)
+Bishop::Bishop(Window *window, std::string filename) : Piece(window, filename, 3)
 {
 }
 

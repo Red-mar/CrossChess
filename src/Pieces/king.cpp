@@ -1,6 +1,6 @@
 #include "king.h"
 
-King::King(Window *window, std::string filename) : Piece(window, filename)
+King::King(Window *window, std::string filename) : Piece(window, filename,10)
 {}
 
 std::vector<Tile *>

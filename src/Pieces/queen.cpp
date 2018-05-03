@@ -1,6 +1,6 @@
 #include "queen.h"
 
-Queen::Queen(Window *window, std::string filename) : Piece(window, filename)
+Queen::Queen(Window *window, std::string filename) : Piece(window, filename, 9)
 {
 }
 

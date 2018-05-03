@@ -1,6 +1,6 @@
 #include "rook.h"
 
-Rook::Rook(Window *window, std::string filename) : Piece(window, filename)
+Rook::Rook(Window *window, std::string filename) : Piece(window, filename, 5)
 {
 }
 

@@ -4,7 +4,7 @@
 #include "ai.h"
 #include "log.h"
 
-class RandomAi : public Player, public Ai
+class RandomAi : public Ai
 {
   public:
     RandomAi(std::string name);

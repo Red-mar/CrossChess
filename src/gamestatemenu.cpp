@@ -106,7 +106,7 @@ void GameStateMenu::resetUI() // TODO: reset method in uielement
     uiElements["lblTitle"]->box->setY((window->mHeight / 4) - uiElements["lblTitle"]->getHeight());
 
     uiElements["btnAi"]->box->setX((window->mWidth / 4) * 3 - 50);
-    uiElements["btnAi"]->box->setY((window->mHeight / 4) - uiElements["lblTitle"]->getHeight());
+    uiElements["btnAi"]->box->setY((window->mHeight / 4) * 3 - 20);
 
     uiElements["btnLocal"]->box->setX((window->mWidth / 2) - (window->mWidth / 4) - 50);
     uiElements["btnLocal"]->box->setY((window->mHeight / 4) * 3 - 20);
