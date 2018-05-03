@@ -81,7 +81,7 @@ GameStateGame::update(float dt)
     {
         if (!player->hasKing())
         {
-            currentStateCode = MAIN_MENU; 
+            currentStateCode = MAIN_MENU; //TODO: end screen / fade out
         }
     }
 

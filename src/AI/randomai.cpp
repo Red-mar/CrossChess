@@ -22,6 +22,68 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
                 if (move->getPiece() &&
                     (king = dynamic_cast<King *>(move->getPiece())))
                 {
+                    std::vector<Tile *> availableMoves;
+                    for (auto kingMoves : king->canMove(move, tiles))
+                    {
+                        if (!kingMoves->getPiece() ||
+                            !hasPiece(kingMoves->getPiece()))
+                        {
+                            availableMoves.push_back(kingMoves);
+                        }
+                    }
+                    for (auto myMoves : availableMoves)
+                    {
+                        if (myMoves->getPiece())
+                        {
+                            //check if when it takes another piece his piece could be taken
+                            bool pieceIsDefended = false;
+                            for (auto opponentTile : tiles)
+                            {
+                                if (opponentTile->getPiece() && !hasPiece(opponentTile->getPiece()))
+                                {
+                                    for (auto opponentMove : getOpponentDefendMoves(opponentTile, tiles))
+                                    {
+                                        if (opponentMove == myMoves)
+                                        {
+                                            pieceIsDefended = true;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (!pieceIsDefended)
+                            {
+                                Log::log("Randomai says: have to move king!");
+                                selectedTile = move;
+                                return move;
+                            }
+                        }
+                        else
+                        {
+                            bool tileIsDefended = false;
+                            for (auto opponentTile : tiles)
+                            {
+                                if (opponentTile->getPiece() && !hasPiece(opponentTile->getPiece()))
+                                {
+                                    for (auto opponentMove : getOpponentAvailableMoves(opponentTile, tiles))
+                                    {
+                                        if (opponentMove == myMoves)
+                                        {
+                                            Log::log("Randomai says: I could move there but my piece would be taken!");
+                                            tileIsDefended = true;
+                                        }
+                                    }
+                                }
+                            }
+                            if (!tileIsDefended)
+                            {
+                                Log::log("Randomai says: have to move king!");
+                                selectedTile = move;
+                                return move;
+                            }
+                        }
+                    }
+
                     Log::log("Randomai says: Help my king is being taken and I don't know what to do!");
                 }
             }
@@ -60,7 +122,6 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
                                     {
                                         pieceIsDefended = true;
                                     }
-                                    
                                 }
                             }
                         }
@@ -94,10 +155,27 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
         std::vector<Tile *> availableMoves;
         for (auto move : randomPiece->getPiece()->canMove(randomPiece, tiles))
         {
-            if (!move->getPiece() ||
-                !hasPiece(move->getPiece()))
+            if (!move->getPiece())
             {
-                availableMoves.push_back(move);
+                bool tileIsDefended = false;
+                for (auto opponentTile : tiles)
+                {
+                    if (opponentTile->getPiece() && !hasPiece(opponentTile->getPiece()))
+                    {
+                        for (auto opponentMove : getOpponentAvailableMoves(opponentTile, tiles))
+                        {
+                            if (opponentMove == move)
+                            {
+                                Log::log("Randomai says: I could move there but my piece would be taken!");
+                                tileIsDefended = true;
+                            }
+                        }
+                    }
+                }
+                if (!tileIsDefended)
+                {
+                    availableMoves.push_back(move);
+                }
             }
         }
         if (availableMoves.size())
