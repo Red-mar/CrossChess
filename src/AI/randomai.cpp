@@ -46,7 +46,7 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
             {
                 if (move->getPiece())
                 {
-                    //check if when it moves his piece could be taken
+                    //check if when it takes another piece his piece could be taken
                     bool pieceIsDefended = false;
                     for (auto opponentTile : tiles)
                     {

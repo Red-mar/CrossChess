@@ -76,9 +76,12 @@ GameStateGame::update(float dt)
         currentTurn = grid->getCurrentPlayer();
         Label *label = (Label *)uiElements["lblCurrentPlayer"];
         label->setText("Current Player = " + grid->getCurrentPlayer()->getName());
-        if (!grid->getCurrentPlayer()->hasKing())
+    }
+    for(auto player : players)
+    {
+        if (!player->hasKing())
         {
-            currentStateCode = MAIN_MENU; // TODO: fadeout and end screen or something
+            currentStateCode = MAIN_MENU; 
         }
     }
 
