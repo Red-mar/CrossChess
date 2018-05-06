@@ -55,7 +55,7 @@ target_compile_options(SDLStructured PUBLIC -s USE_SDL=2 )
 #target_compile_options(SDLStructured -s USE_SDL_IMAGE=2)
 
 
-set_target_properties(SDLStructured PROPERTIES LINK_FLAGS "-s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS=['png'] -s USE_SDL_TTF=2 --preload-file assets -s EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL','ALLOC_STACK','ALLOC_STATIC','ALLOC_DYNAMIC','ALLOC_NONE'] -s TOTAL_MEMORY=67108864")
+set_target_properties(SDLStructured PROPERTIES LINK_FLAGS "-O3 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS=['png'] -s USE_SDL_TTF=2 --preload-file assets -s EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL','ALLOC_STACK','ALLOC_STATIC','ALLOC_DYNAMIC','ALLOC_NONE'] -s TOTAL_MEMORY=67108864")
 #set_target_properties(SDLStructured PROPERTIES LINK_FLAGS "-s SDL2_IMAGE_FORMATS=['png']")
 
 
