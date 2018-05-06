@@ -14,6 +14,7 @@ GameStateMenu::~GameStateMenu()
 void GameStateMenu::load(GameInfo stack)
 {
     UNUSED(stack);
+    
     Button *btnLocal = new Button(window, window->mWidth / 4 - 50, (window->mHeight / 4) * 3 - 20, 100, 40, "assets/button.png");
     Button *btnAi = new Button(window, (window->mWidth / 4) * 3 - 50, (window->mHeight / 4) * 3 - 20, 100, 40, "assets/buttonai.png");
     Label *lblTitle = new Label(window, window->mWidth / 2, (window->mHeight / 4) * 3, 5, 5, "Welcome to Cross Chess");
@@ -23,6 +24,7 @@ void GameStateMenu::load(GameInfo stack)
     uiElements["btnLocal"] = btnLocal;
     uiElements["btnAi"] = btnAi;
     uiElements["lblTitle"] = lblTitle;
+    
 }
 
 GameState::GameInfo GameStateMenu::unload()

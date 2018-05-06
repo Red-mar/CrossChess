@@ -1,3 +1,5 @@
+#ifndef EMSCRIPTEN
+
 #ifndef SOUNDEFFECT_H
 #define SOUNDEFFECT_H
 
@@ -6,25 +8,27 @@
 
 class SoundEffects
 {
-  public:
-    static SoundEffects *getInstance(); // NOTE
-    SoundEffects();
-    ~SoundEffects();
+public:
+  static SoundEffects *getInstance(); // NOTE
+  SoundEffects();
+  ~SoundEffects();
 
-    SoundEffects(SoundEffects const &){};
-    void operator=(SoundEffects const &){};
+  SoundEffects(SoundEffects const &){};
+  void operator=(SoundEffects const &){};
 
-    void play(std::string name);
-    void setVolume(Uint8 volume);
-    Uint8 getVolume();
+  void play(std::string name);
+  void setVolume(Uint8 volume);
+  Uint8 getVolume();
 
-  private:
-    static SoundEffects* instance;
-    std::unordered_map<std::string, Mix_Chunk *> soundEffects;
+private:
+  static SoundEffects *instance;
+  std::unordered_map<std::string, Mix_Chunk *> soundEffects;
 
-    int channel;
+  int channel;
 
-    void load();
+  void load();
 };
 
 #endif // !SOUNDEFFECT_H
+
+#endif // !EMSCRIPTEN

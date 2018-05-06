@@ -13,6 +13,7 @@ bool SDL::init()
     }
     Log::verbose("Started SDL.");
 
+#ifndef __EMSCRIPTEN__
     if (SDL_WasInit(SDL_INIT_AUDIO) != 0)
     {
         Log::error("SDL_WasInit: Could not reinitialize audio, error: ");
@@ -44,7 +45,8 @@ bool SDL::init()
     Log::verbose("Initialized audio.");
 
     Mix_AllocateChannels(16);
-
+#endif // !__EMSCRIPTEN__
+/*
     flags = (SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
 
     if (SDL_WasInit(flags) != 0)
@@ -60,7 +62,7 @@ bool SDL::init()
         throw "SDL_InitSubSystem Failed";
     }
     Log::verbose("Initialized video.");
-
+*/
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
     {
         Log::error("IMG_INIT: could not initialize png support");
@@ -80,9 +82,12 @@ bool SDL::init()
 
 void SDL::exit()
 {
+#ifndef __EMSCRIPTEN__
     Mix_AllocateChannels(0);
     Mix_Quit();
     Mix_CloseAudio();
+#endif // __!EMSCRIPTEN__
+
     if (TTF_WasInit())
     {
         TTF_Quit();

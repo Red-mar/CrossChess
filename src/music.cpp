@@ -1,3 +1,4 @@
+#ifndef EMSCRIPTEN
 #include "music.h"
 #include "log.h"
 
@@ -8,7 +9,9 @@ Music::Music(std::string file) : music(nullptr),
     if (!music)
     {
         Log::log("Mix_LoadMUS: could not load " + filepath + ", error: " + Mix_GetError());
-    } else {
+    }
+    else
+    {
         Log::debug("Music loaded from " + filepath);
     }
 }
@@ -93,25 +96,26 @@ bool Music::isPaused()
 
 bool Music::isFadingIn()
 {
-	return (Mix_FadingMusic() == MIX_FADING_IN);
+    return (Mix_FadingMusic() == MIX_FADING_IN);
 }
 bool Music::isFadingOut()
 {
-	return (Mix_FadingMusic() == MIX_FADING_OUT);
+    return (Mix_FadingMusic() == MIX_FADING_OUT);
 }
 int Music::setVolume(int volume)
 {
-	if (volume > MIX_MAX_VOLUME)
-		Log::warning("Mix_VolumeMusic: Tried to overflow volume");
+    if (volume > MIX_MAX_VOLUME)
+        Log::warning("Mix_VolumeMusic: Tried to overflow volume");
 
-	return Mix_VolumeMusic(volume);
+    return Mix_VolumeMusic(volume);
 }
 int Music::getVolume()
 {
-	return Mix_VolumeMusic(-1);
+    return Mix_VolumeMusic(-1);
 }
 int Music::getMaxVolume()
 {
-	return MIX_MAX_VOLUME;
+    return MIX_MAX_VOLUME;
 }
 
+#endif // !EMSCRIPTEN

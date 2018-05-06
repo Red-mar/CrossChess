@@ -3,6 +3,7 @@
 
 #include "gamestate.h"
 #include "window.h"
+#include "emscripten.h"
 
 #include "inputmanager.h"
 
@@ -13,9 +14,12 @@ class StateManager
 
         virtual ~StateManager();
 
-        void run();
-    private:
+        void run(void *arg = NULL);
+        void MainLoop();
+        void LoadState();
         Window* window;
+    private:
+        
         GameState* currentState;
         GameState::GameInfo sharedInfo;
 };

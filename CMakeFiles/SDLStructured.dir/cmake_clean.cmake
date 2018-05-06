@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/SDLStructured.dir/main.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/AI/AI.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/AI/localplayer.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/AI/randomai.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/Pieces/bishop.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/Pieces/king.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/Pieces/knight.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/Pieces/pawn.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/Pieces/queen.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/Pieces/rook.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/UI/button.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/UI/label.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/UI/messagelog.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/UI/text.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/UI/uielement.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/gamestategame.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/gamestatemenu.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/grid.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/inputmanager.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/log.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/music.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/piece.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/player.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/sdl.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/shapes.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/soundeffects.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/sprite.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/statemanager.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/tile.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/timer.cpp.o"
+  "CMakeFiles/SDLStructured.dir/src/window.cpp.o"
+  "SDLStructured.pdb"
+  "SDLStructured.js"
+  "SDLStructured.js.manifest"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/SDLStructured.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

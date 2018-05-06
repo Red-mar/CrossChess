@@ -1,0 +1,14 @@
+cmake -DCMAKE_TOOLCHAIN_FILE=D:/rewrite/cmake/Modules/Platform/Emscripten.cmake -DCMAKE_BUILD_TYPE=Debug
+-DZLIB_LIBRARY="C:\\usr\\bin\\SDL2\\lib\\x64\\zlib.lib" -DZLIB_INCLUDE_DIR="C:\usr\bin\SDL2\include" -DSDL2_INCLUDE_DIR=
+"C:\usr\bin\SDL2\include" -DSDL2_LIBRARY="C:\usr\bin\SDL2\lib\x64\SDL2.lib" -DSDL2_IMAGE_LIBRARY="C:\usr\bin\SDL2\lib\x6
+4\SDL2_image.lib" -DSDL2_IMAGE_INCLUDE_DIR="C:\usr\bin\SDL2\include" -DSDL2_TTF_INCLUDE_DIR="C:\usr\bin\SDL2\include" -D
+SDL2_TTF_LIBRARY="C:\usr\bin\SDL2\lib\x64\SDL2_ttf.lib" -G "MinGW Makefiles" D:\\rewrite\\CMakeLists.txt
+
+
+
+
+cmake -DCMAKE_TOOLCHAIN_FILE="D:/rewrite/cmake/Modules/Platform/Emscripten.cmake" -DCMAKE_BUILD_TYPE=Debu
+g -DZLIB_LIBRARY="C:\\usr\\bin\\SDL2\\lib\\x64\\zlib.lib" -DZLIB_INCLUDE_DIR="C:\\usr\\bin\\SDL2\\include" -DSDL2_INCLUD
+E_DIR="C:\\usr\\bin\\SDL2\\include" -DSDL2_LIBRARY="D:\\emscriptenlibs\\libSDL2.a" -DSDL2_IMAGE_LIBRARY="D:\\emscriptenl
+ibs\\libSDL_image.a" -DSDL2_IMAGE_INCLUDE_DIR="C:\\usr\\bin\\SDL2\\include" -DSDL2_TTF_INCLUDE_DIR="C:\\usr\\bin\\SDL2\\
+include" -DSDL2_TTF_LIBRARY="D:\\emscriptenlibs\\libSDL_TTF.a" -G "MinGW Makefiles" D:\\rewrite\\CMakeLists.txt

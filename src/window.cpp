@@ -10,7 +10,7 @@ Window::Window(uint32_t width, uint32_t height, std::string title) : window(null
                                                                      originalHeight(height),
                                                                      isFullscreen(false),
                                                                      mTitle(title),
-                                                                     bg_color({0, 0, 0,0}),
+                                                                     bg_color({0, 0, 0, 0}),
                                                                      framerate(60),
                                                                      frame_delay(0),
                                                                      current_frame_delta(0)
@@ -20,18 +20,21 @@ Window::Window(uint32_t width, uint32_t height, std::string title) : window(null
     if (!window || !renderer)
     {
         Log::error("Window: could not create window");
-        throw "Window failed";
+        //throw "Window failed";
     }
     //maximize();
+    
+    Log::log("setting up time");
     frame_delay = 1000 / framerate;
     framerateTimer.start();
     deltaTimer.start();
 
-    setIcon("assets/icon.bmp");
-
+    //setIcon("assets/icon.bmp");
+    Log::log("doing window stuff");
     clear();
     refresh();
     SDL_Delay(500);
+    Log::log("made window");
 }
 
 Window::~Window()
@@ -41,29 +44,37 @@ Window::~Window()
 
 void Window::create(std::string title, int width, int height, int windowFlags, int rendererFlags)
 {
-    destroy();
-
+    //destroy();
+Log::log("making window");
     window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, windowFlags);
-    if (window == NULL)
-    {
-        Log::error("Window: Could not create window");
-    }
-    rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    this->renderer = SDL_CreateRenderer(window, -1, rendererFlags);
+    //if (window == NULL)
+    //{
+    //    Log::error("Window: Could not create window");
+    //}
+    //rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    Log::log("not making renderer");
+    //this->renderer = SDL_CreateRenderer(window, -1, 0);
+    
     //SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
-    if (renderer == NULL)
-    {
-        Log::error("Could not create renderer");
-    }
+    //if (renderer == NULL)
+    //{
+    //    Log::error("Could not create renderer");
+    //}
 
     //SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-    setTitle(title);
+    //setTitle(title);
 
     //need surface?
-    mWidth = width;
-    mHeight = height;
+    //mWidth = width;
+    //mHeight = height;
     //SDL_GetWindowSize(window, &mWidth, &mHeight);
+    Log::log("done");
+}
+
+void Window::createRenderer()
+{
+    renderer = SDL_CreateRenderer(window, -1, 0);
 }
 
 void Window::destroy()
@@ -102,7 +113,9 @@ SDL_Texture *Window::loadImage(std::string filename)
 
     if (newTexture == NULL)
     {
-        Log::error("SDL_CreateTextureFromSurface: could not create texture from surface, error: ");
+        printf(SDL_GetError());
+        std::string error = SDL_GetError();
+        Log::error(error);
     }
     return newTexture;
 }
@@ -241,7 +254,12 @@ void Window::drawBox(RotatedRectangle *r, SDL_Color color)
 
 void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
 {
-    // NOTE: float to Sint16 might be bad?
+// NOTE: float to Sint16 might be bad?
+
+// NOTE: takes a lot of cpu power not realy worth it maybe as an option
+//aapolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
+
+#ifndef EMSCRIPTEN
     Sint16 vx[6];
     Sint16 vy[6];
     for (int i = 0; i < 6; i++)
@@ -251,13 +269,9 @@ void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
     }
 
     polygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
+#endif // !EMSCRIPTEN
 
-    // NOTE: takes a lot of cpu power not realy worth it maybe as an option
-    //aapolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
-
-    /*
-    NOTE: Rendering without SDLGFX
-
+#ifdef EMSCRIPTEN
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
     SDL_RenderDrawLine(renderer,
@@ -283,11 +297,12 @@ void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
     SDL_RenderDrawLine(renderer,
                        (int)hexagon->points[5].x, (int)hexagon->points[5].y,
                        (int)hexagon->points[0].x, (int)hexagon->points[0].y);
-                       */
+#endif // EMSCRIPTEN
 }
 
 void Window::drawFilledHexagon(Hexagon *hexagon, SDL_Color color)
 {
+#ifndef EMSCRIPTEN
     Sint16 vx[6];
     Sint16 vy[6];
     for (int i = 0; i < 6; i++)
@@ -296,4 +311,33 @@ void Window::drawFilledHexagon(Hexagon *hexagon, SDL_Color color)
         vy[i] = (Sint16)hexagon->points[i].y;
     }
     filledPolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
+#endif // !EMSCRIPTEN
+
+#ifdef EMSCRIPTEN
+    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+    SDL_RenderDrawLine(renderer,
+                       (int)hexagon->points[0].x, (int)hexagon->points[0].y,
+                       (int)hexagon->points[1].x, (int)hexagon->points[1].y);
+
+    SDL_RenderDrawLine(renderer,
+                       (int)hexagon->points[1].x, (int)hexagon->points[1].y,
+                       (int)hexagon->points[2].x, (int)hexagon->points[2].y);
+
+    SDL_RenderDrawLine(renderer,
+                       (int)hexagon->points[2].x, (int)hexagon->points[2].y,
+                       (int)hexagon->points[3].x, (int)hexagon->points[3].y);
+
+    SDL_RenderDrawLine(renderer,
+                       (int)hexagon->points[3].x, (int)hexagon->points[3].y,
+                       (int)hexagon->points[4].x, (int)hexagon->points[4].y);
+
+    SDL_RenderDrawLine(renderer,
+                       (int)hexagon->points[4].x, (int)hexagon->points[4].y,
+                       (int)hexagon->points[5].x, (int)hexagon->points[5].y);
+
+    SDL_RenderDrawLine(renderer,
+                       (int)hexagon->points[5].x, (int)hexagon->points[5].y,
+                       (int)hexagon->points[0].x, (int)hexagon->points[0].y);
+#endif // EMSCRIPTEN
 }

@@ -1,0 +1,3 @@
+D:/rewrite/CMakeFiles/rebuild_cache.dir
+D:/rewrite/CMakeFiles/SDLStructured.dir
+D:/rewrite/CMakeFiles/edit_cache.dir

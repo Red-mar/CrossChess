@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <math.h>
 
 class Point
 {
@@ -162,9 +163,9 @@ Hex hex_divide(Hex a, int k);
 int hex_length(Hex hex);
 int hex_distance(Hex a, Hex b);
 
-const std::vector<Hex> hex_directions = {
+const std::vector<Hex> hex_directions = std::vector<Hex>({
 	Hex(1, 0, -1), Hex(1, -1, 0), Hex(0, -1, 1),
-	Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)};
+	Hex(-1, 0, 1), Hex(-1, 1, 0), Hex(0, 1, -1)});
 
 Hex hex_direction(int direction /* 0 to 5 */);
 Hex hex_neighbor(Hex hex, int direction);
@@ -194,6 +195,7 @@ static const std::vector<Hex> hex_diagonals = {
 Hex hex_diagonal(int direction /* 0 to 5 */);
 Hex hex_diagonal_neighbor(Hex hex, int direction);
 
+/*
 namespace std
 {
 template <>
@@ -208,5 +210,5 @@ struct hash<Hex>
 	}
 };
 }
-
+*/
 #endif // !SHAPES_H

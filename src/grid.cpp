@@ -191,7 +191,7 @@ bool Grid::selectTile(Point point)
                     if (!tile->getPiece())
                     {
                         tile->setSelected(true);
-                        tile->setColor({0, 255, 0, 55});
+                        tile->setColor({128, 0, 128, 55});
                     }
                     else if (!currentPlayer->hasPiece(tile->getPiece()))
                     {

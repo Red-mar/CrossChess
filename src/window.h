@@ -32,6 +32,9 @@ class Window
 
         void setIcon(std::string filepath);
         void create(std::string title, int width, int height, int windowFlags = 0, int rendererFlags = 0);
+
+        //emscripten
+        void createRenderer();
         void resize(int width, int height, int windowFlags = 0);
 
         void center();
