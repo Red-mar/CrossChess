@@ -14,14 +14,24 @@ class StateManager
 
         virtual ~StateManager();
 
-        void run(void *arg = NULL);
+#ifdef __EMSCRIPTEN__
         void MainLoop();
+#endif // __EMSCRIPTEN__
+
+#ifndef __EMSCRIPTEN__
+        void run();
+#endif // !__EMSCRIPTEN__
+
+
         void LoadState();
         Window* window;
     private:
         
         GameState* currentState;
         GameState::GameInfo sharedInfo;
+        Uint64 now;
+        Uint64 last;
+        double deltaTime;
 };
 
 #endif // !StateManager_H

@@ -203,6 +203,9 @@ SDLStructured_BINARY_DIR:STATIC=D:/rewrite
 //Value Computed by CMake
 SDLStructured_SOURCE_DIR:STATIC=D:/rewrite
 
+//No help, variable specified on the command line.
+SDLTest_TARGET_DIR:UNINITIALIZED=D:\\rewrite\\build
+
 
 ########################
 # INTERNAL cache entries
@@ -276,8 +279,6 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
-//Have symbol pthread_create
-CMAKE_HAVE_LIBC_CREATE:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=D:/rewrite
@@ -339,14 +340,4 @@ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 CMAKE_STRIP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-//Details about finding SDL2
-FIND_PACKAGE_MESSAGE_DETAILS_SDL2:INTERNAL=[D:\\emscriptenlibs\\libSDL2.a][C:/usr/bin/SDL2/include][v()]
-//Details about finding SDL2_IMAGE
-FIND_PACKAGE_MESSAGE_DETAILS_SDL2_IMAGE:INTERNAL=[D:\\emscriptenlibs\\libSDL_image.a][C:/usr/bin/SDL2/include][v()]
-//Details about finding SDL2_ttf
-FIND_PACKAGE_MESSAGE_DETAILS_SDL2_ttf:INTERNAL=[D:/emscriptenlibs/libSDL_ttf.a][C:/usr/bin/SDL2/include][v2.0.14()]
-//Details about finding Threads
-FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
-//Details about finding ZLIB
-FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[C:\\usr\\bin\\SDL2\\lib\\x64\\zlib.lib][C:/usr/bin/SDL2/include][v1.2.5()]
 

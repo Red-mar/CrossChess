@@ -28,15 +28,6 @@ bool SDL::init()
         throw "SDL_INIT Fail";
     }
 
-    /* what does this do
-    flags = MIX_INIT_MP3;
-
-    if ((Mix_Init(flags) & flags) != flags)
-    {
-        Log::error("Mix_Init: could not start audio");
-        Log::error(Mix_GetError());
-    }
-*/
     if (-1 == Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048))
     {
         Log::error("Mix_OpenAudio: could not start audio");
@@ -46,7 +37,7 @@ bool SDL::init()
 
     Mix_AllocateChannels(16);
 #endif // !__EMSCRIPTEN__
-/*
+
     flags = (SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
 
     if (SDL_WasInit(flags) != 0)
@@ -62,7 +53,7 @@ bool SDL::init()
         throw "SDL_InitSubSystem Failed";
     }
     Log::verbose("Initialized video.");
-*/
+
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
     {
         Log::error("IMG_INIT: could not initialize png support");

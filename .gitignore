@@ -35,3 +35,7 @@ build
 *.bat
 .git
 .vscode
+
+CMakeFiles
+Makefile
+CMakeCache.txt

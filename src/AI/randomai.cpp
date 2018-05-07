@@ -166,7 +166,6 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
                         {
                             if (opponentMove == move)
                             {
-                                Log::log("Randomai says: I could move there but my piece would be taken!");
                                 tileIsDefended = true;
                             }
                         }
@@ -180,7 +179,6 @@ RandomAi::selectTile(std::vector<Tile *> tiles)
         }
         if (availableMoves.size())
         {
-            Log::log("Randomai says: If I don't know what I'm doing you won't either!");
             selectedTile = randomPiece;
             pieceFound = true;
         }

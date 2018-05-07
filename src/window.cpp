@@ -17,24 +17,23 @@ Window::Window(uint32_t width, uint32_t height, std::string title) : window(null
 {
     create(title, width, height);
 
-    if (!window || !renderer)
+    if (!window)
     {
         Log::error("Window: could not create window");
-        //throw "Window failed";
+        throw "Window failed";
     }
-    //maximize();
-    
-    Log::log("setting up time");
+
     frame_delay = 1000 / framerate;
     framerateTimer.start();
     deltaTimer.start();
 
+#ifndef __EMSCRIPTEN__
     //setIcon("assets/icon.bmp");
-    Log::log("doing window stuff");
+#endif // !__EMSCRIPTEN__
+
     clear();
     refresh();
     SDL_Delay(500);
-    Log::log("made window");
 }
 
 Window::~Window()
@@ -44,37 +43,32 @@ Window::~Window()
 
 void Window::create(std::string title, int width, int height, int windowFlags, int rendererFlags)
 {
-    //destroy();
-Log::log("making window");
+    destroy();
     window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, windowFlags);
-    //if (window == NULL)
-    //{
-    //    Log::error("Window: Could not create window");
-    //}
-    //rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    Log::log("not making renderer");
-    //this->renderer = SDL_CreateRenderer(window, -1, 0);
-    
-    //SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
-    //if (renderer == NULL)
-    //{
-    //    Log::error("Could not create renderer");
-    //}
+    if (window == NULL)
+    {
+        Log::error("Window: Could not create window");
+    }
+    rendererFlags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 
-    //SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+#ifndef __EMSCRIPTEN__ // Renderer is a bit finicky with emscripten, creating it in the emscripten_set_main_loop seems to work
+    this->renderer = SDL_CreateRenderer(window, -1, rendererFlags);
+    if (renderer == NULL)
+    {
+        Log::error("Could not create renderer");
+    }
+#endif // !__EMSCRIPTEN__
 
-    //setTitle(title);
+    setTitle(title);
 
-    //need surface?
-    //mWidth = width;
-    //mHeight = height;
-    //SDL_GetWindowSize(window, &mWidth, &mHeight);
-    Log::log("done");
+    mWidth = width;
+    mHeight = height;
+    SDL_GetWindowSize(window, &mWidth, &mHeight);
 }
 
 void Window::createRenderer()
 {
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
 void Window::destroy()
@@ -259,7 +253,7 @@ void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
 // NOTE: takes a lot of cpu power not realy worth it maybe as an option
 //aapolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
     Sint16 vx[6];
     Sint16 vy[6];
     for (int i = 0; i < 6; i++)
@@ -269,40 +263,28 @@ void Window::drawHexagon(Hexagon *hexagon, SDL_Color color)
     }
 
     polygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
-#endif // !EMSCRIPTEN
+#endif // !__EMSCRIPTEN__
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[0].x, (int)hexagon->points[0].y,
-                       (int)hexagon->points[1].x, (int)hexagon->points[1].y);
+    const SDL_Point points[7] = {
+        (int)hexagon->points[0].x, (int)hexagon->points[0].y,
+        (int)hexagon->points[1].x, (int)hexagon->points[1].y,
+        (int)hexagon->points[2].x, (int)hexagon->points[2].y,
+        (int)hexagon->points[3].x, (int)hexagon->points[3].y,
+        (int)hexagon->points[4].x, (int)hexagon->points[4].y,
+        (int)hexagon->points[5].x, (int)hexagon->points[5].y,
+        (int)hexagon->points[0].x, (int)hexagon->points[0].y};
 
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[1].x, (int)hexagon->points[1].y,
-                       (int)hexagon->points[2].x, (int)hexagon->points[2].y);
+    SDL_RenderDrawLines(renderer, points, 7);
 
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[2].x, (int)hexagon->points[2].y,
-                       (int)hexagon->points[3].x, (int)hexagon->points[3].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[3].x, (int)hexagon->points[3].y,
-                       (int)hexagon->points[4].x, (int)hexagon->points[4].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[4].x, (int)hexagon->points[4].y,
-                       (int)hexagon->points[5].x, (int)hexagon->points[5].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[5].x, (int)hexagon->points[5].y,
-                       (int)hexagon->points[0].x, (int)hexagon->points[0].y);
-#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 }
 
 void Window::drawFilledHexagon(Hexagon *hexagon, SDL_Color color)
 {
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
     Sint16 vx[6];
     Sint16 vy[6];
     for (int i = 0; i < 6; i++)
@@ -311,33 +293,20 @@ void Window::drawFilledHexagon(Hexagon *hexagon, SDL_Color color)
         vy[i] = (Sint16)hexagon->points[i].y;
     }
     filledPolygonRGBA(renderer, vx, vy, 6, color.r, color.g, color.b, color.a);
-#endif // !EMSCRIPTEN
+#endif // !__EMSCRIPTEN__
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
     SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[0].x, (int)hexagon->points[0].y,
-                       (int)hexagon->points[1].x, (int)hexagon->points[1].y);
+    const SDL_Point points[7] = {
+        (int)hexagon->points[0].x, (int)hexagon->points[0].y,
+        (int)hexagon->points[1].x, (int)hexagon->points[1].y,
+        (int)hexagon->points[2].x, (int)hexagon->points[2].y,
+        (int)hexagon->points[3].x, (int)hexagon->points[3].y,
+        (int)hexagon->points[4].x, (int)hexagon->points[4].y,
+        (int)hexagon->points[5].x, (int)hexagon->points[5].y,
+        (int)hexagon->points[0].x, (int)hexagon->points[0].y};
 
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[1].x, (int)hexagon->points[1].y,
-                       (int)hexagon->points[2].x, (int)hexagon->points[2].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[2].x, (int)hexagon->points[2].y,
-                       (int)hexagon->points[3].x, (int)hexagon->points[3].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[3].x, (int)hexagon->points[3].y,
-                       (int)hexagon->points[4].x, (int)hexagon->points[4].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[4].x, (int)hexagon->points[4].y,
-                       (int)hexagon->points[5].x, (int)hexagon->points[5].y);
-
-    SDL_RenderDrawLine(renderer,
-                       (int)hexagon->points[5].x, (int)hexagon->points[5].y,
-                       (int)hexagon->points[0].x, (int)hexagon->points[0].y);
-#endif // EMSCRIPTEN
+    SDL_RenderDrawLines(renderer, points, 7);
+#endif // __EMSCRIPTEN__
 }

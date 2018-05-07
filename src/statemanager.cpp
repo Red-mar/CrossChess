@@ -9,11 +9,17 @@
 
 StateManager::StateManager(Window *window) : window(window),
                                              currentState(nullptr),
-                                             sharedInfo({})
+                                             sharedInfo({}),
+                                             now(SDL_GetPerformanceCounter()),
+                                             last(0),
+                                             deltaTime(0)
 {
     this->currentState = new GameStateMenu(this->window);
 
-    //this->currentState->load();
+#ifndef __EMSCRIPTEN__ // since emscripten has no renderer yet no sprite can be loaded
+    this->currentState->load();
+#endif // !__EMSCRIPTEN__
+
 }
 
 void StateManager::LoadState()
@@ -28,28 +34,27 @@ StateManager::~StateManager()
         this->currentState->unload();
         delete this->currentState;
 
-        this->currentState = nullptr; // you never know
+        this->currentState = nullptr;
     }
 }
 
-void StateManager::run(void *arg)
+
+#ifndef __EMSCRIPTEN__
+
+void StateManager::run()
 {
     bool quit = false;
     int countedFrames = 0;
-    Uint64 NOW = SDL_GetPerformanceCounter();
-    Uint64 LAST = 0;
-    double deltaTime = 0;
     while (!quit)
     {
-        LAST = NOW;
-        NOW = SDL_GetPerformanceCounter();
-        deltaTime = ((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
+        last = now;
+        now = SDL_GetPerformanceCounter();
+        deltaTime = ((now - last) * 1000 / (double)SDL_GetPerformanceFrequency());
         float avgFPS = countedFrames / (window->getTicks() / 1000.0f);
         if (avgFPS > 200000)
         {
             avgFPS = 0;
         }
-        //Log::debug(std::to_string(avgFPS));
 
         GameState::StateCode whatToDoNow;
         whatToDoNow = currentState->update((float)(deltaTime / 1000.0));
@@ -87,21 +92,15 @@ void StateManager::run(void *arg)
     }
 }
 
+#endif // !__EMSCRIPTEN__
+
+#ifdef __EMSCRIPTEN__
+
 void StateManager::MainLoop()
 {
-    int countedFrames = 0;
-    Uint64 NOW = SDL_GetPerformanceCounter();
-    Uint64 LAST = 0;
-    double deltaTime = 0;
-    LAST = NOW;
-    NOW = SDL_GetPerformanceCounter();
-    deltaTime = ((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
-    float avgFPS = countedFrames / (window->getTicks() / 1000.0f);
-    if (avgFPS > 200000)
-    {
-        avgFPS = 0;
-    }
-    //Log::debug(std::to_string(avgFPS));
+    last = now;
+    now = SDL_GetPerformanceCounter();
+    deltaTime = ((now - last) * 1000 / (double)SDL_GetPerformanceFrequency());
 
     GameState::StateCode whatToDoNow;
     whatToDoNow = currentState->update((float)(deltaTime / 1000.0));
@@ -121,9 +120,7 @@ void StateManager::MainLoop()
     case GameState::CONTINUE:
         break;
     case GameState::QUIT:
-        #ifdef __EMSCRIPTEN__
-            emscripten_cancel_main_loop();
-        #endif // __EMSCRIPTEN__
+        emscripten_cancel_main_loop();
         break;
     default:
         break;
@@ -137,5 +134,6 @@ void StateManager::MainLoop()
     }
 
     window->delayFramerateIfNeeded();
-    countedFrames++;
 }
+
+#endif // __EMSCRIPTEN__

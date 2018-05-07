@@ -3,7 +3,7 @@
 #include "Window.h"
 #include "Log.h"
 
-//#ifdef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
 
 #include "emscripten.h"
 #include <chrono>
@@ -19,14 +19,14 @@ void main_loop(void * arg)
     StateManager* manager = (StateManager*)arg;
     if (!manager->window->renderer)
     {
-        Log::log("made renderer i guess");
+        Log::log("Window::CreateRenderer, Created renderer for EMSCRIPTEN");
         manager->window->createRenderer();
         manager->LoadState();
     }
     manager->MainLoop();
 }
 
-//#endif // EMSCRIPTEN
+#endif // __EMSCRIPTEN__
 
 int main(int argc, char *args[])
 {
@@ -38,16 +38,14 @@ int main(int argc, char *args[])
 
     Window window(width, height, "Cross Chess");
     
-    StateManager manager(&window);
-    emscripten_set_main_loop_arg(main_loop, &manager, 0, 1);
 #ifdef __EMSCRIPTEN__
-    //StateManager manager(&window);
-    //emscripten_set_main_loop_arg(main_loop, &manager, -1, 1);
+    StateManager manager(&window);
+    emscripten_set_main_loop_arg(main_loop, &manager, 60, 1);
 #endif // __EMSCRIPTEN
 
 #ifndef __EMSCRIPTEN__
-    // StateManager manager(&window);
-    //manager.run();
+    StateManager manager(&window);
+    manager.run();
 #endif // !__EMSCRIPTEN
 
     return 0;
