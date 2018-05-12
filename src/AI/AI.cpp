@@ -4,6 +4,7 @@ Ai::Ai(std::string name) : Player(name)
 {
 }
 
+
 std::vector<Tile *>
 Ai::getOpponentAvailableMoves(Tile* tile, std::vector<Tile *> tiles)
 {

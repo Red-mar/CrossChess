@@ -161,6 +161,20 @@ void Grid::render(float xPos, float yPos)
     }
 }
 
+void Grid::update(float dt)
+{
+    for (auto player : players)
+    {
+        player->update(dt);
+
+        if (player->hasTurn() && player->hasTurnEnded())
+        {
+            movePiece(player->getMove());
+            otherPlayer->setTurn(true);
+        }
+    }
+}
+
 bool Grid::selectTile(Point point)
 {
     bool succes = false;
@@ -223,13 +237,13 @@ bool Grid::selectTile(Point point)
     return succes;
 }
 
-bool Grid::movePiece(Point point)
+Tile *
+Grid::canMovePiece(Point point)
 {
-    bool succes = false;
+    Tile *moveTile = nullptr;
     if (!selectedTile->getPiece() || !currentPlayer->hasPiece(selectedTile->getPiece()))
     {
         Log::debug("no piece to move");
-        succes = false;
     }
     else
     {
@@ -242,16 +256,10 @@ bool Grid::movePiece(Point point)
                 if (tile->getPiece())
                 {
                     if (currentPlayer->hasPiece(tile->getPiece()))
-                    {
                         break;
-                    }
-                    else
-                    {
-                        otherPlayer->removePiece(tile->getPiece());
-                        delete tile->getPiece();
-                    }
+                    
                 }
-                succes = true;
+                moveTile = tile;
                 if (selectedTile)
                 {
                     for (auto tile : tiles)
@@ -260,15 +268,12 @@ bool Grid::movePiece(Point point)
                         tile->setColor({0, 255, 0, 255});
                     }
                 }
-                tile->setPiece(selectedTile->getPiece());
-                selectedTile->removePiece();
-                selectedTile->setSelected(false);
-                selectedTile = nullptr;
+
                 break;
             }
         }
     }
-    if (!succes)
+    if (!moveTile)
     {
         for (auto tile : tiles)
         {
@@ -281,7 +286,17 @@ bool Grid::movePiece(Point point)
     {
         nextTurn();
     }
-    return succes;
+    return moveTile;
+}
+
+void Grid::movePiece(Tile *moveTile)
+{
+    otherPlayer->removePiece(moveTile->getPiece());
+    delete moveTile->getPiece();
+    moveTile->setPiece(selectedTile->getPiece());
+    selectedTile->removePiece();
+    selectedTile->setSelected(false);
+    selectedTile = nullptr;
 }
 
 void Grid::nextTurn()
@@ -289,14 +304,14 @@ void Grid::nextTurn()
     Ai *ai;
     if ((ai = dynamic_cast<Ai *>(otherPlayer)) && otherPlayer->hasKing())
     {
-        std::swap(currentPlayer, otherPlayer);
-        
+        //std::swap(currentPlayer, otherPlayer);
+
         selectedTile = ai->selectTile(tiles);
         selectedTile->setSelected(true);
         selectedTile->setColor({0, 255, 0, 55});
         Point point = ai->selectMove(tiles, {hexOrientation, hexSize, hexOrigin});
-        movePiece(point);
-        
+        ai->setMove(canMovePiece(point));
+        ai->setTurn(true);
     }
     else if (currentPlayer == players[0])
     {

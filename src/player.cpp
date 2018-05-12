@@ -1,6 +1,7 @@
 #include "player.h"
 
-Player::Player(std::string name): name(name)
+Player::Player(std::string name): name(name),
+                                    turn(false)
 {
 
 }
@@ -8,6 +9,12 @@ Player::Player(std::string name): name(name)
 Player::~Player()
 {
     
+}
+
+void
+Player::update(float dt)
+{
+    currentTurnTime -= dt * 1; 
 }
 
 std::string
@@ -50,4 +57,41 @@ Player::hasKing()
     }
     
     return false;
+}
+
+
+bool
+Player::hasTurn()
+{
+    return turn;
+}
+
+bool
+Player::hasTurnEnded()
+{
+    return currentTurnTime < 0;
+}
+
+void
+Player::setTurn(bool nturn)
+{
+    if (nturn) {
+        currentTurnTime = turnTime;
+    } else {
+        currentTurnTime = 1000;
+    }
+    
+    turn = nturn;
+}
+
+void
+Player::setMove(Tile* nmove)
+{
+    selectedMove = nmove;
+}
+
+Tile*
+Player::getMove()
+{
+    return selectedMove;
 }

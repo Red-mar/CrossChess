@@ -8,6 +8,7 @@ class LocalPlayer : public Player
     public:
         LocalPlayer(std::string name);
         ~LocalPlayer();
+        void update(float dt);
 
     private:
 };

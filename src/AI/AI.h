@@ -11,6 +11,7 @@ public:
   virtual Tile *selectTile(std::vector<Tile *> tiles) = 0;
   virtual Point selectMove(std::vector<Tile *> tiles, Layout layout) = 0;
 
+
 protected:
   Tile *selectedTile;
   std::vector<Tile *> getOpponentAvailableMoves(Tile *tile, std::vector<Tile *> tiles);

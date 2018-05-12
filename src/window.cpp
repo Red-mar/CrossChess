@@ -1,5 +1,10 @@
 #include "Window.h"
+
 #include "Log.h"
+
+#ifdef __EMSCRIPTEN__
+    #include "inputmanager.h"
+#endif
 
 Window::Window(uint32_t width, uint32_t height, std::string title) : window(nullptr),
                                                                      //surface(nullptr),
@@ -64,6 +69,14 @@ void Window::create(std::string title, int width, int height, int windowFlags, i
     mWidth = width;
     mHeight = height;
     SDL_GetWindowSize(window, &mWidth, &mHeight);
+
+
+
+    #ifdef __EMSCRIPTEN__ // for touch move somewhere else maybe
+
+    InputManager::getInstance()->setWindowSize(mWidth, mHeight);
+
+    #endif
 }
 
 void Window::createRenderer()

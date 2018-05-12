@@ -9,9 +9,8 @@ set (CMAKE_CXX_STANDARD 11)
 project(SDLStructured)
 include_directories(src)
 
-if(!EMSCRIPTEN)
-
-
+if(EMSCRIPTEN)
+else()
 find_package(ZLIB REQUIRED)
 if(NOT ZLIB_FOUND)
 	message(FATAL_ERROR "zlib library not found")
@@ -41,13 +40,14 @@ if(NOT SDL2_TTF_FOUND)
 	message(FATAL_ERROR "SDL2_ttf library not found")
 endif(NOT SDL2_TTF_FOUND)
 include_directories(${SDL2_TTF_INCLUDE_DIRS})
+
 find_package(SDL_gfx REQUIRED)
 if(NOT SDLGFX_FOUND)
 	message(FATAL_ERROR "SDL2_gfx library not found")
 endif(NOT SDLGFX_FOUND)
 include_directories(${SDLGFX_INCLUDE_DIR})
 
-endif(!EMSCRIPTEN)
+endif(EMSCRIPTEN)
 
 
 
@@ -58,7 +58,7 @@ add_executable(SDLStructured main.cpp ${SOURCES})
 if(EMSCRIPTEN)
 
 target_compile_options(SDLStructured PUBLIC -s USE_SDL=2 )
-set_target_properties(SDLStructured PROPERTIES LINK_FLAGS "-o index.html -O3 -Os -s WASM=1 -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS=['png'] -s USE_SDL_TTF=2 --preload-file assets -s EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL','ALLOC_STACK','ALLOC_STATIC','ALLOC_DYNAMIC','ALLOC_NONE']")
+set_target_properties(SDLStructured PROPERTIES LINK_FLAGS "-o index.html -O3 -Os -s USE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS=['png'] -s USE_SDL_TTF=2 --embed-file assets -s EXTRA_EXPORTED_RUNTIME_METHODS=['ALLOC_NORMAL','ALLOC_STACK','ALLOC_STATIC','ALLOC_DYNAMIC','ALLOC_NONE']")
 
 else()
 

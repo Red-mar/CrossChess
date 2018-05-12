@@ -23,6 +23,12 @@ InputManager *InputManager::getInstance()
     return instance;
 }
 
+void InputManager::setWindowSize(int w, int h)
+{
+    wWidth = w;
+    wHeight = h;
+}
+
 void InputManager::update(float cameraX, float cameraY)
 {
     int i;
@@ -91,9 +97,12 @@ void InputManager::update(float cameraX, float cameraY)
         case SDL_MOUSEWHEEL:
             break;
         case SDL_FINGERDOWN:
-            mouseX = event.tfinger.x;
-            mouseY = event.tfinger.y;
+            mouseX = event.tfinger.x * wWidth;
+            mouseY = event.tfinger.y * wHeight;
             mouseDown[MOUSE_LEFT] = true;
+            mouseUp[MOUSE_LEFT] = true;
+            //Log::log(std::to_string(event.tfinger.x * wWidth));
+            //Log::log(std::to_string(event.tfinger.y * wHeight));
             break;
 
         default:
@@ -250,6 +259,8 @@ int InputManager::getMouseY()
 
 bool InputManager::isMouseInside(Rectangle rectangle)
 {
+    Log::log(std::to_string(mouseX));
+    Log::log(std::to_string(mouseY));
     if ((this->mouseX >= rectangle.x) &&
         (this->mouseX <= rectangle.x + rectangle.w) &&
         (this->mouseY >= rectangle.y) &&

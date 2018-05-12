@@ -17,10 +17,12 @@ void GameStateGame::load(GameInfo stack)
     case LOCAL:
         players.push_back(new LocalPlayer(stack.player1name));
         players.push_back(new LocalPlayer(stack.player2name));
+        players[0]->setTurn(true);
         break;
     case AI:
         players.push_back(new LocalPlayer(stack.player1name));
         players.push_back(new RandomAi(stack.player2name));
+        players[0]->setTurn(true);
         break;
     default:
         Log::error("GameType not supported!");
@@ -77,13 +79,16 @@ GameStateGame::update(float dt)
         Label *label = (Label *)uiElements["lblCurrentPlayer"];
         label->setText("Current Player = " + grid->getCurrentPlayer()->getName());
     }
-    for(auto player : players)
+    for (auto player : players)
     {
+        player->update(dt);
         if (!player->hasKing())
         {
             currentStateCode = MAIN_MENU; //TODO: end screen / fade out
         }
     }
+
+    grid->update(dt);
 
     return currentStateCode;
 }
@@ -107,8 +112,14 @@ void GameStateGame::updateInput()
     {
         if (grid->getSelectedTile() && grid->getSelectedTile()->getPiece())
         {
-            if (grid->movePiece(Point(inputManager->getMouseX(), inputManager->getMouseY())))
-                Log::debug("moved piece!");
+            Tile* move = grid->canMovePiece(Point(inputManager->getMouseX(), inputManager->getMouseY()));
+            if (move)
+            {
+                grid->getCurrentPlayer()->setMove(move);
+                Log::log("moved piece!");
+            } else {
+                Log::log("denied move piece");
+            }
         }
         else if (grid->selectTile(Point(inputManager->getMouseX(), inputManager->getMouseY())))
             Log::debug("selected tile!");

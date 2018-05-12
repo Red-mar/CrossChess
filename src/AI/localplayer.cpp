@@ -9,3 +9,9 @@ LocalPlayer::~LocalPlayer()
 {
     
 }
+
+void
+LocalPlayer::update(float dt)
+{
+    currentTurnTime -= dt * 1;
+}

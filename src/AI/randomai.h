@@ -12,6 +12,8 @@ class RandomAi : public Ai
     Tile *getSelectedTile();
     Tile *selectTile(std::vector<Tile *> tiles);
     Point selectMove(std::vector<Tile *> tiles, Layout layout);
+
+    void update(float dt);
 };
 
 #endif // !RANDOMAI_H

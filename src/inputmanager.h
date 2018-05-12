@@ -39,7 +39,11 @@ class InputManager
     //bool isPrintableKeyDown();
     //std::string getCurPrintableKey();
 
+    // For touch events
+    void setWindowSize(int w, int h);
+    
     InputManager();
+
 
     //InputManager(InputManager const&) {};
     //void operator=(InputManager const&) {};
@@ -56,6 +60,10 @@ class InputManager
         bool mouseUp[MOUSE_MAX];
         bool will_quit;
         bool isLocked;
+
+        // For touch
+        int wWidth;
+        int wHeight;
 
     //bool isMouseInside(Rectangle rectangle);
 };

@@ -26,9 +26,11 @@ class Grid
 
     Player* getCurrentPlayer();
     void render(float xPos, float yPos);
+    void update(float dt);
     Tile* getSelectedTile();
     bool selectTile(Point point);
-    bool movePiece(Point point);
+    Tile* canMovePiece(Point point);
+    void movePiece(Tile* moveTile);
 
   private:
     Window *window;

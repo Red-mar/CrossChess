@@ -6,6 +6,12 @@ RandomAi::RandomAi(std::string name) : Ai(name)
     selectedTile = nullptr;
 }
 
+void
+RandomAi::update(float dt)
+{
+    
+}
+
 Tile *
 RandomAi::selectTile(std::vector<Tile *> tiles)
 {

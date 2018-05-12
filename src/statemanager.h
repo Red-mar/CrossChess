@@ -3,7 +3,11 @@
 
 #include "gamestate.h"
 #include "window.h"
+
+#ifdef __EMSCRIPTEN__
 #include "emscripten.h"
+#endif // __EMSCRIPTEN__
+
 
 #include "inputmanager.h"
 
